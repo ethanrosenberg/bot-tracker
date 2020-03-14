@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+
+  root to: "searches#start"
+
   resources :searches
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
