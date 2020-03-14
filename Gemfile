@@ -5,7 +5,8 @@ ruby '2.6.1'
 
 
 gem 'activeadmin'
-
+gem 'twitter'
+gem 'dotenv-rails'
 # Plus integrations with:
 gem 'devise'
 

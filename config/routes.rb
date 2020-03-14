@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root to: "searches#start"
+  root to: "searches#scrape"
 
   resources :searches
   devise_for :admin_users, ActiveAdmin::Devise.config

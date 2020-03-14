@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_14_041252) do
+ActiveRecord::Schema.define(version: 2020_03_14_234632) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -41,6 +41,18 @@ ActiveRecord::Schema.define(version: 2020_03_14_041252) do
   create_table "searches", force: :cascade do |t|
     t.string "keyword"
     t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tweets", force: :cascade do |t|
+    t.integer "tweet_id"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.integer "user_id"
+    t.datetime "profile_created_at"
+    t.string "profile_handle"
+    t.string "profile_image_url"
+    t.integer "followers"
     t.datetime "updated_at", null: false
   end
 
