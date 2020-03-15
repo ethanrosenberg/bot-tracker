@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
-  root to: "searches#scrape"
+  #root to: "searches#scrape"
+  get '/' => redirect('/admin')
 
   resources :searches
   devise_for :admin_users, ActiveAdmin::Devise.config
