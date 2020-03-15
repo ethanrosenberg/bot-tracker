@@ -2,7 +2,7 @@
 
 module Scrape
 
-  SLEEP = 5
+  SLEEP = 7
 
     def self.start_scrape
 
@@ -13,8 +13,10 @@ module Scrape
           config.access_token_secret = ENV["ACCESS_SECRET"]
         end
 
-        ::Search.create(keyword: ::Keyword.all.map {|kw| kw.term}.join(", "))
 
+        new_search = ::Search.create(keyword: ::Keyword.all.map {|kw| kw.term}.join(", "), status: "working")
+
+        results_count = 0
         ::Keyword.all.each do |item|
           STDERR.puts "Scraping keyword (#{item.term})"
             client.search(item.term).take(5).each do |tweet|
@@ -27,13 +29,20 @@ module Scrape
                   t.profile_handle = tweet.user.screen_name
                   t.profile_image_url = tweet.user.profile_image_url_https.to_s
                   t.followers = tweet.user.followers_count
+
+                  results_count += 1
                 end
+                new_search.results = results_count
+                new_search.save
             end
           STDERR.puts "Sleeping for #{SLEEP} seconds zzz..."
           sleep SLEEP
         end
 
-          STDERR.puts "Finished Scraping."
+        new_search.status = "finished"
+        new_search.save
+
+        STDERR.puts "Finished Scraping."
 
     end
 
