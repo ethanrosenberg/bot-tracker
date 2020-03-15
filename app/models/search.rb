@@ -16,10 +16,10 @@ class Search < ApplicationRecord
         client.search(self.keyword).take(5).each do |tweet|
 
           Tweet.create do |t|
-            t.tweet_id = tweet.id
+            #t.tweet_id = tweet.id
             t.text = tweet.text
             t.created_at = tweet.created_at
-            t.user_id = tweet.user.id
+            #t.user_id = tweet.user.id
             t.profile_created_at = tweet.user.created_at
             t.profile_handle = tweet.user.screen_name
             t.profile_image_url = tweet.user.profile_image_url_https.to_s
