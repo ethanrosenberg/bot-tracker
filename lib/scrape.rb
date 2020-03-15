@@ -13,6 +13,8 @@ module Scrape
           config.access_token_secret = ENV["ACCESS_SECRET"]
         end
 
+        ::Search.create(keyword: ::Keyword.all.map {|kw| kw.term}.join(", "))
+
         ::Keyword.all.each do |item|
           STDERR.puts "Scraping keyword (#{item.term})"
             client.search(item.term).take(5).each do |tweet|
@@ -35,10 +37,5 @@ module Scrape
 
     end
 
-    def self.test_scrape
-
-      puts "a"
-
-    end
 
 end

@@ -3,7 +3,7 @@
 
 namespace :scheduler do
   desc "Gets latest tweets for desired keyword"
-  puts "Scraping tweets..."
+  puts "Starting task..."
 
   task :twitter => :environment do
       #Rake.application.rake_require "#{Rails.root}/lib/scrape.rb"
@@ -15,5 +15,5 @@ namespace :scheduler do
       Scrape.start_scrape
 
   end
-  puts "tweets scraped!"
+  puts "Finished task."
 end
