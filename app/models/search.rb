@@ -4,7 +4,7 @@ class Search < ApplicationRecord
   def start_jobs
 
     STDERR.puts "starting twitter scraper..."
-    Scrape::Twitter.scrape
+    #Scrape::Twitter.scrape
 
     mark_finished
 
