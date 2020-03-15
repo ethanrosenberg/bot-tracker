@@ -11,6 +11,7 @@ class SearchesController < ApplicationController
 
   def scrape
 
+sleep 3
     client = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV["CONSUMER_KEY"]
       config.consumer_secret     = ENV["CONSUMER_SECRET"]
@@ -20,8 +21,8 @@ class SearchesController < ApplicationController
 
 
 
-    client.search('americanbulldog').take(3).each do |tweet|
-      byebug
+    client.search('americanbulldog').take(50).each do |tweet|
+
       tweet_id = tweet.id
       tweet_text = tweet.text
       tweet_created_at = tweet.created_at
