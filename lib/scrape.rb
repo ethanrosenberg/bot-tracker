@@ -20,18 +20,23 @@ module Scrape
         ::Keyword.all.each do |item|
           STDERR.puts "Scraping keyword (#{item.term})"
             client.search(item.term).take(5).each do |tweet|
-                ::Tweet.create do |t|
-                  #t.tweet_id = tweet.id
-                  t.text = tweet.text
-                  t.created_at = tweet.created_at
-                  #t.user_id = tweet.user.id
-                  t.profile_created_at = tweet.user.created_at
-                  t.profile_handle = tweet.user.screen_name
-                  t.profile_image_url = tweet.user.profile_image_url_https.to_s
-                  t.followers = tweet.user.followers_count
 
-                  results_count += 1
-                end
+              unless already_exists(tweet.id)
+
+                  ::Tweet.create do |t|
+                      t.tweet_id = tweet.id
+                      t.text = tweet.text
+                      t.created_at = tweet.created_at
+                      t.user_id = tweet.user.id
+                      t.profile_created_at = tweet.user.created_at
+                      t.profile_handle = tweet.user.screen_name
+                      t.profile_image_url = tweet.user.profile_image_url_https.to_s
+                      t.followers = tweet.user.followers_count
+
+                      results_count += 1
+                  end
+              end
+
                 new_search.results = results_count
                 new_search.save
             end
@@ -42,8 +47,12 @@ module Scrape
         new_search.status = "finished"
         new_search.save
 
-        STDERR.puts "Finished Scraping."
+        STDERR.puts "Finished Scraping. Found #{new_search.results} new tweets"
 
+    end
+
+    def self.already_exists(id)
+      ::Tweet.where(:tweet_id => id).blank? ? false : true
     end
 
 
