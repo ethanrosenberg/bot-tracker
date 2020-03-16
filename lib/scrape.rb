@@ -20,7 +20,10 @@ module Scrape
           STDERR.puts "Scraping keyword (#{item.term})"
             client.search(item.term).take(5).each do |tweet|
 
-              unless already_exists(tweet.id)
+              create_account(tweet)
+
+              unless tweet_already_exists(tweet.id)
+
                 create_tweet(tweet)
                 results_count += 1
               end
@@ -54,7 +57,24 @@ module Scrape
 
     end
 
-    def self.already_exists(id)
+    def self.create_account(tweet)
+      #byebug
+      if Account.where(:user_id => tweet.user.id).blank?
+        Account.create do |ac|
+            ac.user_id = tweet.user.id
+            ac.creation_date = tweet.user.created_at
+            ac.handle = tweet.user.screen_name
+            ac.profile_image_url = tweet.user.profile_image_url_https.to_s
+            ac.followers = tweet.user.followers_count
+            ac.tweet_count = tweet.user.statuses_count
+        end
+      end
+
+
+    end
+
+
+    def self.tweet_already_exists(id)
       Tweet.where(:tweet_id => id).blank? ? false : true
     end
 
