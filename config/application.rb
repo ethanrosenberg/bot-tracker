@@ -27,6 +27,8 @@ module BotTracker
     ActiveSupport::Dependencies.autoload_paths.push "#{Rails.root}/app/lib"
     config.eager_load_paths += [Rails.root.join('lib')]
 
+
+
     #config.eager_load_paths += %W(#{config.root}/lib)
     #config.autoload_paths << Rails.root.join('lib')
     #config.autoload_paths << Rails.root.join('lib/scrape')

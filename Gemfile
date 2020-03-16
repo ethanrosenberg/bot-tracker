@@ -9,7 +9,7 @@ gem 'twitter'
 gem 'dotenv-rails'
 # Plus integrations with:
 gem 'devise'
-
+gem 'local_time'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.1'

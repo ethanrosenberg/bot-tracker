@@ -28,7 +28,13 @@ ActiveAdmin.register Report do
     column "Account Creation Date" do |date|
       date.account.creation_date
     end
-    column "Report Created", :created_at
+    column "Report Created" do |report|
+      #local_time()
+      report.created_at
+      #report.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
+
+    end
+    #column "Report Created", time.:created_at
 
 
   end

@@ -3,6 +3,8 @@ class Account < ApplicationRecord
 
   has_one :report
 
+
+
   def run_report
     #byebug
     new_report = Report.new do |report|
@@ -24,4 +26,17 @@ class Account < ApplicationRecord
       puts "Hmm have an error calculating tweets per day... Days Since Opening - #{days_since_opening} || Tweet Count - #{self.tweet_count}"
     end
   end
+
+  def created_at
+    self[:created_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
+  end
+
+  def updated_at
+    self[:updated_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
+  end
+
+  def creation_date
+    self[:creation_date].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y")
+  end
+
 end
