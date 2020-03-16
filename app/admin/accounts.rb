@@ -26,7 +26,7 @@ ActiveAdmin.register Account do
     column "Handle", :handle
     #column "Profile Image Url", :profile_image_url
     column "Followers", :followers
-    column "Created At", :creation_date
+    column "Created At", :created_at
 
 
   end
