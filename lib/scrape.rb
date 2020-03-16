@@ -18,7 +18,7 @@ module Scrape
         results_count = 0
         Keyword.all.each do |item|
           STDERR.puts "Scraping keyword (#{item.term})"
-            client.search(item.term).take(5).each do |tweet|
+            client.search(item.term).take(50).each do |tweet|
 
               create_account(tweet)
 
@@ -67,10 +67,21 @@ module Scrape
             ac.profile_image_url = tweet.user.profile_image_url_https.to_s
             ac.followers = tweet.user.followers_count
             ac.tweet_count = tweet.user.statuses_count
+            default_url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+            ac.default_profile_pic = check_for_default_picture(tweet.user.profile_image_url_https.to_s)
 
         end
       end
 
+
+    end
+
+    def self.check_for_default_picture(url)
+     if url.include? "https://abs.twimg.com/sticky/default_profile_images/default_profile"
+       return true
+     else
+       return false
+     end
 
     end
 

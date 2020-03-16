@@ -7,6 +7,7 @@ class Account < ApplicationRecord
     #byebug
     new_report = Report.new do |report|
       report.tweets_per_day = calculate_tweets_per_day()
+      report.default_profile_pic = self.default_profile_pic
       report.save
     end
     self.report = new_report
@@ -15,7 +16,12 @@ class Account < ApplicationRecord
   end
 
   def calculate_tweets_per_day
-    days_since_opening = (Date.today - self.creation_date.to_datetime).to_i
-    self.tweet_count / days_since_opening
+    begin
+
+      days_since_opening = (Date.today - self.creation_date.to_datetime).to_i
+      self.tweet_count / days_since_opening
+    rescue
+      puts "Hmm have an error calculating tweets per day... Days Since Opening - #{days_since_opening} || Tweet Count - #{self.tweet_count}"
+    end
   end
 end
