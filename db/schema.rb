@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_15_215243) do
+ActiveRecord::Schema.define(version: 2020_03_16_033157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "creation_date"
+    t.string "handle"
+    t.string "profile_image_url"
+    t.integer "followers"
+    t.integer "tweet_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"

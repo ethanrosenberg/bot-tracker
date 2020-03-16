@@ -1,5 +1,4 @@
 
-
 module Scrape
 
   SLEEP = 7
@@ -14,27 +13,16 @@ module Scrape
         end
 
 
-        new_search = ::Search.create(keyword: ::Keyword.all.map {|kw| kw.term}.join(", "), status: "working")
+        new_search = Search.create(keyword: Keyword.all.map {|kw| kw.term}.join(", "), status: "working")
 
         results_count = 0
-        ::Keyword.all.each do |item|
+        Keyword.all.each do |item|
           STDERR.puts "Scraping keyword (#{item.term})"
             client.search(item.term).take(5).each do |tweet|
 
               unless already_exists(tweet.id)
-
-                  ::Tweet.create do |t|
-                      t.tweet_id = tweet.id
-                      t.text = tweet.text
-                      t.created_at = tweet.created_at
-                      t.user_id = tweet.user.id
-                      t.profile_created_at = tweet.user.created_at
-                      t.profile_handle = tweet.user.screen_name
-                      t.profile_image_url = tweet.user.profile_image_url_https.to_s
-                      t.followers = tweet.user.followers_count
-
-                      results_count += 1
-                  end
+                create_tweet(tweet)
+                results_count += 1
               end
 
                 new_search.results = results_count
@@ -51,8 +39,23 @@ module Scrape
 
     end
 
+    def self.create_tweet(tweet)
+
+      Tweet.create do |t|
+          t.tweet_id = tweet.id
+          t.text = tweet.text
+          t.created_at = tweet.created_at
+          t.user_id = tweet.user.id
+          t.profile_created_at = tweet.user.created_at
+          t.profile_handle = tweet.user.screen_name
+          t.profile_image_url = tweet.user.profile_image_url_https.to_s
+          t.followers = tweet.user.followers_count
+      end
+
+    end
+
     def self.already_exists(id)
-      ::Tweet.where(:tweet_id => id).blank? ? false : true
+      Tweet.where(:tweet_id => id).blank? ? false : true
     end
 
 
