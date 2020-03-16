@@ -18,9 +18,9 @@ ActiveAdmin.register Account do
 
   index do
     column "id", :id
-    column "Profile Image" do |prof|
-      link_to image_tag(prof.profile_image_url, size: "50x50"), "https://twitter.com/#{prof.handle}", target: :_blank
-    end
+    #column "Profile Image" do |prof|
+    #  link_to image_tag(prof.profile_image_url, size: "50x50"), "https://twitter.com/#{prof.handle}", target: :_blank
+    #end
     column "User ID", :user_id
     column "Account Creation Date", :creation_date
     column "Handle", :handle

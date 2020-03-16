@@ -67,6 +67,7 @@ module Scrape
             ac.profile_image_url = tweet.user.profile_image_url_https.to_s
             ac.followers = tweet.user.followers_count
             ac.tweet_count = tweet.user.statuses_count
+
         end
       end
 
