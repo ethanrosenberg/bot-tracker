@@ -17,6 +17,7 @@ class Account < ApplicationRecord
 
   end
 
+
   def calculate_tweets_per_day
     begin
 

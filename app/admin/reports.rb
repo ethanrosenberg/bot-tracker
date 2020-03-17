@@ -21,6 +21,9 @@ ActiveAdmin.register Report do
       link_to image_tag(prof.account.profile_image_url, size: "50x50"), "https://twitter.com/#{prof.account.handle}", target: :_blank
     end
     column "Average Tweets Per Day", :tweets_per_day
+    column "Post Data" do |post_data|
+      post_data.account.rt_percentage
+    end
     column "Default Profile Picture?", :default_profile_pic
     column "Handle" do |prof|
       prof.account.handle
