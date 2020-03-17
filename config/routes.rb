@@ -4,8 +4,11 @@ Rails.application.routes.draw do
 
   mount ResqueWeb::Engine => "/resque_web"
 
+  #root to: 'home#index'
+  root :to => redirect('/admin')
+
   #root to: "searches#scrape"
-  get '/' => redirect('/admin')
+  #get '/' => redirect('/admin')
 
   resources :searches
   devise_for :admin_users, ActiveAdmin::Devise.config
