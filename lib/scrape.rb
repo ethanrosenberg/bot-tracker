@@ -131,17 +131,17 @@ module Scrape
 
 
 
-    def self.perform
+    def perform
       puts "AMAZING!!! IT WORKED!"
       start_scrape()
     end
 
-module_function :start_scrape
+module_function :start_scrape, :perform
 
 end
 
 Scrape.extend AfterDo
-Scrape.after :start_scrape do |return_value|
+Scrape.after :perform do |return_value|
   finish(return_value)
 end
 #Scrape.after :start_scrape do cool_stuff end
