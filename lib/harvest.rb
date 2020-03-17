@@ -1,11 +1,9 @@
-module Harvest
 
-  class Scrape
+  class Harvest
+    @queue = :harvest_queue
 
-    def start
-      puts "Hello"
+    def self.perform
+      puts "AMAZING!!! IT WORKED!"
     end
 
   end
-
-end

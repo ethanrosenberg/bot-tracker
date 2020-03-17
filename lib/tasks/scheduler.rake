@@ -12,7 +12,7 @@ namespace :scheduler do
       #include Scrape
       #Scrape.start_scrape
 
-      Scrape.start_scrape
+      Resque.enqueue(Scrape)
 
   end
   puts "Finished task."

@@ -2,6 +2,7 @@
 module Scrape
 
   SLEEP = 7
+  @queue = :scrape
 
     def self.start_scrape
 
@@ -116,6 +117,13 @@ module Scrape
 
     def self.tweet_already_exists(id)
       Tweet.where(:tweet_id => id).blank? ? false : true
+    end
+
+
+
+    def self.perform
+      puts "AMAZING!!! IT WORKED!"
+      start_scrape()
     end
 
 
