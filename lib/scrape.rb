@@ -5,7 +5,7 @@ module Scrape
   SLEEP = 7
   @queue = :scrape
 
-    def self.start_scrape
+    def start_scrape
 
         @client = Twitter::REST::Client.new do |config|
           config.consumer_key        = ENV["CONSUMER_KEY"]
@@ -136,6 +136,7 @@ module Scrape
       start_scrape()
     end
 
+module_function :start_scrape
 
 end
 
