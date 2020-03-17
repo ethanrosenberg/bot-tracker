@@ -1,6 +1,12 @@
 class Search < ApplicationRecord
   after_create :start_jobs
 
+  def finish
+    self.status = 'finished'
+    save
+  end
+
+
   def created_at
     self[:created_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
   end

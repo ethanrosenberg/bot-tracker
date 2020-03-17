@@ -36,8 +36,10 @@ module Scrape
           sleep SLEEP
         end
 
-        new_search.status = "finished"
-        new_search.save
+        new_search.finish
+
+        #new_search.status = "finished"
+        #new_search.save
 
         STDERR.puts "Finished Scraping. Found #{new_search.results} new tweets"
 
