@@ -17,7 +17,7 @@ class Search < ApplicationRecord
     STDERR.puts "starting twitter scraper..."
     #Scrape::Twitter.scrape
 
-    mark_finished
+    #mark_finished
 
   end
 
