@@ -37,6 +37,24 @@ ActiveAdmin.register Search do
       end
     end
 
+
+
   end
+
+  index do
+    column "id", :id
+    column "Keyword(s)", :keyword
+    column "Run Time" do |job|
+      if job.status != 'finished'
+        distance_of_time_in_words_to_now(job.created_at)
+      else
+        distance_of_time_in_words(job.created_at, job.updated_at)
+      end
+    end
+   column "Status", :status
+   column "Results", :results
+   column "Date Created", :created_at
+  end
+
 
 end

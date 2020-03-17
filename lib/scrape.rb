@@ -13,7 +13,7 @@ module Scrape
         end
 
 
-        new_search = Search.create(keyword: Keyword.all.map {|kw| kw.term}.join(", "), status: "working")
+        new_search = Search.create(keyword: Keyword.all.map {|kw| kw.term}.join(", "))
 
         results_count = 0
         Keyword.all.each do |item|
