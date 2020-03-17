@@ -55,6 +55,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    after_do (0.4.0)
     airbrake (10.0.1)
       airbrake-ruby (~> 4.13)
     airbrake-ruby (4.13.3)
@@ -329,6 +330,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  after_do
   airbrake
   bootsnap (>= 1.1.0)
   byebug

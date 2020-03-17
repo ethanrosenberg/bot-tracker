@@ -1,3 +1,4 @@
+require 'after_do'
 
 module Scrape
 
@@ -36,13 +37,20 @@ module Scrape
           sleep SLEEP
         end
 
-        new_search.finish
+        #new_search.finish
 
         #new_search.status = "finished"
         #new_search.save
 
         STDERR.puts "Finished Scraping. Found #{new_search.results} new tweets"
+        new_search.id
 
+    end
+
+    def finish(id)
+      search_job = Search.find(id)
+      search_job.status = "finished"
+      search_job.save
     end
 
     def self.get_user_tweets_percentage(user_id)
@@ -130,3 +138,9 @@ module Scrape
 
 
 end
+
+Scrape.extend AfterDo
+Scrape.after :star_scrape do |return_value|
+  finish(return_value)
+end
+#Scrape.after :start_scrape do cool_stuff end

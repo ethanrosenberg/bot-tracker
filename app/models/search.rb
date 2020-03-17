@@ -1,10 +1,7 @@
 class Search < ApplicationRecord
   after_create :start_jobs
 
-  def finish
-    self.status = 'finished'
-    save
-  end
+
 
 
   def created_at
