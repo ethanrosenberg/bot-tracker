@@ -15,7 +15,7 @@ module Scrape
         end
 
 
-        new_search = Search.create(keyword: Keyword.all.map {|kw| kw.term}.join(", "))
+        new_search = Search.create(keyword: Keyword.all.map {|kw| kw.term}.join(", "), status: 'working')
 
         results_count = 0
         Keyword.all.each do |item|
@@ -51,6 +51,11 @@ module Scrape
       search_job = Search.find(id)
       search_job.status = "finished"
       search_job.save
+    end
+
+    def stop_job(id)
+      Resque::Job.destroy(:scrape, Scrape, id)
+      puts "Stopped Job."
     end
 
     def self.get_user_tweets_percentage(user_id)
@@ -136,7 +141,7 @@ module Scrape
       start_scrape()
     end
 
-module_function :start_scrape, :perform
+module_function :start_scrape, :perform, :stop_job
 
 end
 

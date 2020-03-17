@@ -37,6 +37,10 @@ ActiveAdmin.register Search do
       end
     end
 
+   def stop
+     Scrape.stop_job(params[:job_id])
+   end
+
 
 
   end
@@ -54,6 +58,13 @@ ActiveAdmin.register Search do
    column "Status", :status
    column "Results", :results
    column "Date Created", :created_at
+   column "Stop Search" do |job|
+      if job.status == 'finished'
+        'Done'
+      else
+        link_to "Stop", "/admin/searches/stop?job_id=#{job.id}"
+      end
+    end
   end
 
 
