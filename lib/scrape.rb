@@ -140,7 +140,7 @@ module Scrape
 end
 
 Scrape.extend AfterDo
-Scrape.after :star_scrape do |return_value|
+Scrape.after :start_scrape do |return_value|
   finish(return_value)
 end
 #Scrape.after :start_scrape do cool_stuff end
