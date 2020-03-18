@@ -1,7 +1,7 @@
 require 'after_do'
 
 module Scrape
-
+  include Resque::Plugins::Status
   SLEEP = 7
   @queue = :scrape
 
@@ -53,10 +53,6 @@ module Scrape
       search_job.save
     end
 
-    def stop_job(id)
-      Resque::Job.destroy(:scrape, Scrape, id)
-      puts "Stopped Job."
-    end
 
     def self.get_user_tweets_percentage(user_id)
 
@@ -80,7 +76,7 @@ module Scrape
       { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count }
 
 
-  end
+    end
 
     def self.create_tweet(tweet)
 
@@ -134,14 +130,48 @@ module Scrape
       Tweet.where(:tweet_id => id).blank? ? false : true
     end
 
+    def start_harvest(search, count)
+
+
+      puts "Results: #{count}"
+      search.results = count
+      search.save
+      puts "Sleeping for 5 seconds..."
+      sleep 5
+
+
+    end
+
 
 
     def perform
-      puts "AMAZING!!! IT WORKED!"
-      start_scrape()
+      #puts "AMAZING!!! IT WORKED!"
+      #start_scrape()
+      #start_harvest()
+      puts "Starting harvest..."
+
+      search = Search.create(keyword: "trump", status: "working")
+      count = 0
+      20.times do |item|
+        #byebug
+        unless Search.find(search.id).status == 'stopped'
+          count += 1
+          start_harvest(search, count)
+        end
+
+      end
+
+      puts "Finished harvest."
+      search.id
+
     end
 
-module_function :start_scrape, :perform, :stop_job
+    def new_search
+      #Resque.enqueue(Scrape)
+      job_id = Scrape.create(length: 100)
+    end
+
+module_function :start_scrape, :perform, :new_search, :start_harvest
 
 end
 
@@ -149,4 +179,6 @@ Scrape.extend AfterDo
 Scrape.after :perform do |return_value|
   finish(return_value)
 end
+
+
 #Scrape.after :start_scrape do cool_stuff end

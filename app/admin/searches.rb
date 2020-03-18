@@ -1,4 +1,12 @@
+require 'byebug'
 ActiveAdmin.register Search do
+
+
+  member_action :stop, method: :get do
+    #byebug
+    #Resque::Job.destroy(:scrape, Scrape)
+    redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
+  end
 
   form do |f|
     f.inputs "Search" do
@@ -37,9 +45,31 @@ ActiveAdmin.register Search do
       end
     end
 
-   def stop
-     Scrape.stop_job(params[:job_id])
+   def stopzzz
+     byebug
+
    end
+
+   def stop
+     #byebug
+     #Scrape.stop_job(params[:job_id])
+     puts "Stopping job..."
+     search = Search.find(params[:id])
+     search.status = 'stopped'
+     search.save
+
+     Resque::Job.destroy("scrape", Scrape)
+     #Resque.workers.each(&:unregister_worker)
+
+     #Resque.workers.each(&:unregister_worker)
+
+
+     respond_to do |format|
+         format.html { redirect_to '/admin/searches', notice: 'Scraping job was stopped.' }
+     end
+  end
+
+
 
 
 
@@ -61,10 +91,13 @@ ActiveAdmin.register Search do
    column "Stop Search" do |job|
       if job.status == 'finished'
         'Done'
+      elsif job.status == 'stopped'
+        'Stopped'
       else
-        link_to "Stop", "/admin/searches/stop?job_id=#{job.id}"
+        link_to "Stop", "/admin/searches/#{job.id}/stop/"
       end
     end
+
   end
 
 

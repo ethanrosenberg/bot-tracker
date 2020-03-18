@@ -10,9 +10,10 @@ namespace :scheduler do
       #include Scrape
       #require 'scrape'
       #include Scrape
-      #Scrape.start_scrape
+      #Scrape.new_search
 
-      Resque.enqueue(Scrape)
+      Resque.enqueue(Harvest::Twitter)
+      
 
   end
   puts "Finished task."

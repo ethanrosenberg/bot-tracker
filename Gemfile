@@ -15,6 +15,7 @@ gem 'resque'
 gem 'resque-web', require: 'resque_web'
 gem 'airbrake'
 gem 'after_do'
+gem 'resque-status'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.1'

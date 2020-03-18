@@ -8,7 +8,7 @@ require 'resque/failure/airbrake'
   REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 
   Resque.redis = REDIS
-
+  Resque::Plugins::Status::Hash.expire_in = (24 * 60 * 60) # 24hrs in seconds
 
 
 Resque::Failure::Multiple.classes = [Resque::Failure::Redis, Resque::Failure::Airbrake]
