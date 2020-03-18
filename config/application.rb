@@ -22,6 +22,9 @@ module BotTracker
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
+    ## for using ActiveJob
+    #config.active_job.queue_adapter = :resque
+
     #config.autoload_paths << "#{Rails.root}/lib"
 
     ActiveSupport::Dependencies.autoload_paths.push "#{Rails.root}/app/lib"

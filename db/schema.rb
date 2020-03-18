@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_17_002023) do
+ActiveRecord::Schema.define(version: 2020_03_18_005910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,15 @@ ActiveRecord::Schema.define(version: 2020_03_17_002023) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "queries", force: :cascade do |t|
+    t.string "keyword"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status"
+    t.bigint "search_id"
+    t.index ["search_id"], name: "index_queries_on_search_id"
+  end
+
   create_table "reports", force: :cascade do |t|
     t.integer "tweets_per_day"
     t.boolean "default_profile_pic"
@@ -90,5 +99,6 @@ ActiveRecord::Schema.define(version: 2020_03_17_002023) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "queries", "searches"
   add_foreign_key "reports", "accounts"
 end

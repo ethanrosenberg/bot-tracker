@@ -1,20 +1,18 @@
 class Search < ApplicationRecord
   after_create :start_jobs
 
+  has_many :queries
 
-
-
-  def created_at
-    self[:created_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
-  end
-
-  def updated_at
-    self[:updated_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
-  end
 
   def start_jobs
 
     STDERR.puts "starting twitter scraper..."
+    Keyword.all.each do |keyword|
+      #byebug
+      self.queries.create(keyword: keyword.term)
+    end
+
+
     #Scrape::Twitter.scrape
 
     #mark_finished
@@ -38,6 +36,14 @@ class Search < ApplicationRecord
 
     end
 
+  end
+
+  def created_at
+    self[:created_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
+  end
+
+  def updated_at
+    self[:updated_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
   end
 
   def mark_finished

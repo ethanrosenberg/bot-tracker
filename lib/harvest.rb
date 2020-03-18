@@ -7,24 +7,30 @@ module Harvest
 
     @queue = :harvest
 
-    def initialize(search_id, q)
+    def initialize(query_id, keyword)
 
-      @query_keywords    = Keyword.all
-      #@search = Search.find(search_id)
-      #@search_id = search_id
-      @sleep     = Harvest::SLEEP
+      @query_id = query_id
+      @query_keyword = keyword
+      @query = Query.find(query_id)
+      @sleep = SLEEP
 
     end
 
-    def self.perform(search_id, query)
-     Harvest::Twitter.new(search_id, query).start
+    def self.perform(query_id, keyword)
+      #search = Search.create(status: 'working')
+      puts "queryid: #{query_id} keyword: #{keyword}"
+     Harvest::Twitter.new(query_id, keyword).start
     end
 
     def start
-      while (@search.status !== 'stopped') do
-        puts "Searching..."
-        sleep @sleep.seconds
+      5.times do |item|
+        #byebug
+        puts "Sleeping for 10 seconds."
+        sleep 10
+
       end
+
+      puts "Finished harvest."
       #@word.finish
     end
 

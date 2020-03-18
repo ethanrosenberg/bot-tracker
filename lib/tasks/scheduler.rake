@@ -1,4 +1,4 @@
-#require Rails.root.join('lib', 'scrape')
+require Rails.root.join('lib', 'harvest')
 #Dir.glob('app/lib/tasks/*.rake').each { |r| load r}
 
 namespace :scheduler do
@@ -11,9 +11,10 @@ namespace :scheduler do
       #require 'scrape'
       #include Scrape
       #Scrape.new_search
+      Search.create(status: "working")
 
-      Resque.enqueue(Harvest::Twitter)
-      
+      #Resque.enqueue(Harvest::Twitter)
+
 
   end
   puts "Finished task."
