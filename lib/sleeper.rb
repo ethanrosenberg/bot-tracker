@@ -1,5 +1,7 @@
 
   module Sleeper
+
+    class Work
     @queue = :harvest
 
       def self.perform(seconds)
@@ -12,3 +14,5 @@
         puts "Finished harvest."
       end
   end
+
+end
