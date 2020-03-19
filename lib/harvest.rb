@@ -1,3 +1,5 @@
+#require 'byebug'
+
 module Harvest
 
   class Twitter
@@ -14,8 +16,9 @@ module Harvest
 
     def self.perform(query_id, keyword)
       #search = Search.create(status: 'working')
+  
       puts "queryid: #{query_id} keyword: #{keyword}"
-      Harvest.new(query_id, keyword).start
+      Harvest::Twitter.new(query_id, keyword).start
     end
 
     def start
