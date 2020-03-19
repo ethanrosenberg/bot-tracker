@@ -59,7 +59,12 @@ module Harvest
 
           unless @query.search.status == 'finished' || @query.search.status == 'stopped'
             STDERR.puts "scraping keyword: #{@query_keyword}"
-            STDERR.puts "zzzzz... 15 seconds."
+            STDERR.puts "search status: #{@query.search.status}"
+
+            #logger.info(
+                #{}"Order #1234 placed",
+              #  order_placed: {id: 1234, total: 100.54}
+            #)
 
             unless tweet_already_exists(tweet.id)
               create_tweet(tweet)
@@ -69,8 +74,11 @@ module Harvest
             @query.search.results = results_count
             @query.search.save
 
-            sleep 7
+            STDERR.puts "zzzzz... 15 seconds."
+
           end
+
+          sleep 10
 
         end
 
