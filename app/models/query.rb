@@ -16,10 +16,11 @@ class Query < ApplicationRecord
    end
 
    def stop_job
+     #byebug
     if self.search.status != 'finished'
-      Resque::Job.destroy(:ask_scraper, Scrape::Ask, self.id)
+      Resque::Job.destroy(:harvest, Harvest::Twitter, self.id, self.keyword)
       self.search.status = 'finished'
-      save
+      self.search.save
     end
   end
 
