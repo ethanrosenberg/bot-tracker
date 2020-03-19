@@ -13,8 +13,10 @@ class Search < ApplicationRecord
     end
   end
 
-  def stop_jobs
-    Query.where(:search_id => self.id).each do |job|
+  def self.stop_jobs(id)
+    byebug
+    Query.where(:search_id => id).each do |job|
+      byebug
       job.stop_job
     end
   end

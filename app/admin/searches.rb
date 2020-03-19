@@ -2,11 +2,13 @@
 ActiveAdmin.register Search do
 
 
-  #member_action :stop, method: :get do
+  member_action :stop, method: :get do
     #byebug
     #Resque::Job.destroy(:scrape, Scrape)
-  #  redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
-  #end
+    #byebug
+    Search.stop_jobs(params[:id])
+    redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
+  end
 
   form do |f|
     f.inputs "Search" do
@@ -46,9 +48,9 @@ ActiveAdmin.register Search do
     end
 
 
-   def stop
 
-     Search.stop_jobs(params[:id])
+
+     #Search.stop_jobs(params[:id])
      #byebug
      #Scrape.stop_job(params[:job_id])
 
@@ -75,7 +77,7 @@ ActiveAdmin.register Search do
      #respond_to do |format|
         # format.html { redirect_to '/admin/searches', notice: 'Scraping job was stopped.' }
     # end
-   end
+  
 
 
 
