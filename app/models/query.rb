@@ -11,14 +11,14 @@ class Query < ApplicationRecord
    def start_job
      #byebug
      STDERR.puts "queueing twittery query... id: #{self.id} keyword: #{self.keyword}"
-     Resque.enqueue(Harvest::Twitter, self.id, self.keyword)
+     Resque.enqueue(Harvest::TwitterWorker, self.id, self.keyword)
 
    end
 
    def stop_job
      #byebug
     if self.search.status != 'finished'
-      Resque::Job.destroy(:harvest, Harvest::Twitter, self.id, self.keyword)
+      Resque::Job.destroy(:harvest, Harvest::TwitterWorker, self.id, self.keyword)
       self.search.status = 'finished'
       self.search.save
     end

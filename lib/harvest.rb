@@ -3,7 +3,7 @@
 module Harvest
 
 
-  class Twitter
+  class TwitterWorker
 
 
 
@@ -28,7 +28,7 @@ module Harvest
     def self.perform(query_id, keyword)
       #search = Search.create(status: 'working')
       STDERR.puts "queryid: #{query_id} keyword: #{keyword}"
-      Harvest::Twitter.new(query_id, keyword).start
+      Harvest::TwitterWorker.new(query_id, keyword).start
     end
 
     def create_tweet(tweet)
