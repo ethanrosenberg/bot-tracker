@@ -77,7 +77,7 @@ ActiveAdmin.register Search do
      #respond_to do |format|
         # format.html { redirect_to '/admin/searches', notice: 'Scraping job was stopped.' }
     # end
-  
+
 
 
 
@@ -87,7 +87,9 @@ ActiveAdmin.register Search do
 
   index do
     column "id", :id
-    column "Keyword(s)", :keyword
+    column "Keyword(s)" do |s|
+      s.queries.map {|kw| kw.keyword}.join(", ")
+    end
     column "Run Time" do |job|
       if job.status != 'finished'
         distance_of_time_in_words_to_now(job.created_at)
