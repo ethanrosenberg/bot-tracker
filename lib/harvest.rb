@@ -1,9 +1,4 @@
-
-module Harvest
-
-  SLEEP = 7
-
-  class Twitter
+class Harvest
 
     @queue = :harvest
 
@@ -12,14 +7,14 @@ module Harvest
       @query_id = query_id
       @query_keyword = keyword
       @query = Query.find(query_id)
-      @sleep = SLEEP
+      @sleep = 7
 
     end
 
-    def self.perform(query_id, keyword)
+    def perform(query_id, keyword)
       #search = Search.create(status: 'working')
       puts "queryid: #{query_id} keyword: #{keyword}"
-     Harvest::Twitter.new(query_id, keyword).start
+      Harvest.new(query_id, keyword).start
     end
 
     def start
@@ -34,5 +29,4 @@ module Harvest
       #@word.finish
     end
 
-  end
 end

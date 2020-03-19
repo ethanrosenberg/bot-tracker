@@ -10,7 +10,9 @@ class Search < ApplicationRecord
     Keyword.all.each do |keyword|
       #byebug
       self.queries.create(keyword: keyword.term)
-    end
+  end
+
+
 
 
     #Scrape::Twitter.scrape

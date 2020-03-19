@@ -25,16 +25,31 @@ module BotTracker
     ## for using ActiveJob
     #config.active_job.queue_adapter = :resque
 
-    #config.autoload_paths << "#{Rails.root}/lib"
+    #config.autoload_paths += %W(#{config.root}/app)
 
-    ActiveSupport::Dependencies.autoload_paths.push "#{Rails.root}/app/lib"
+    #Spring.watch "app/jobs/**"
+
+    #config.eager_load_paths << Rails.root.join('lib')
+    #config.eager_load_paths << Rails.root.join('app/jobs')
+
+    #autoloads lib & policy folder during development
+    #config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    #config.autoload_paths << Rails.root.join('app/jobs')
+
+    #onfig.autoload_paths << "#{Rails.root}/app/jobs"
+
+    #ActiveSupport::Dependencies.autoload_paths.push "#{Rails.root}/app/lib"
+    #ActiveSupport::Dependencies.autoload_paths.push "#{Rails.root}/app/jobs"
     config.eager_load_paths += [Rails.root.join('lib')]
+    #config.autoload_paths << "#{Rails.root}/app/jobs"
+    #config.autoload_paths += %W(#{Rails.root}/app/jobs)
 
 
 
     #config.eager_load_paths += %W(#{config.root}/lib)
     #config.autoload_paths << Rails.root.join('lib')
-    #config.autoload_paths << Rails.root.join('lib/scrape')
+    #config.autoload_paths << Rails.root.join('lib/sleeper')
     #config.autoload_paths << Rails.root.join('lib')
     #config.autoload_paths << Rails.root.join('lib/scrape')
     #config.autoload_paths << Rails.root.join('lib/harvest')

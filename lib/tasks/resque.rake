@@ -1,6 +1,14 @@
 require 'resque/tasks'
-require Rails.root.join('lib', 'harvest')
+#require Rails.root.join('app/jobs', 'sleeper')
 #require Rails.root.join('lib', 'harvest')
 
-task "resque:preload" => :environment
-task "resque:setup" => :environment
+task "resque:setup" => :environment do
+  #require Rails.root.join('lib', 'sleeper')
+end
+
+task "resque:preload" => :environment do
+#  require Rails.root.join('lib', 'sleeper')
+
+end
+
+#task "resque:setup" => :environment

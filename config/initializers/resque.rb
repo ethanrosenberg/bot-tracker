@@ -4,6 +4,8 @@ require 'resque/failure/multiple'
 require 'resque/failure/redis'
 require 'resque/failure/airbrake'
 
+#Dir[Rails.root.join("app", "jobs", "*.rb")].each { |file| require file }
+
   uri = URI.parse(ENV['REDISTOGO_URL'])
   REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 
