@@ -16,15 +16,15 @@ module Harvest
 
     def self.perform(query_id, keyword)
       #search = Search.create(status: 'working')
-  
-      puts "queryid: #{query_id} keyword: #{keyword}"
+      STDERR.puts "queryid: #{query_id} keyword: #{keyword}"
+
       Harvest::Twitter.new(query_id, keyword).start
     end
 
     def start
+        STDERR.puts "scraping keyword: #{@query_keyword}"
+        STDERR.puts "zzzzz... 15 seconds."
 
-        puts "scraping keyword: #{@query_keyword}"
-        puts "zzzzz... 10 seconds."
         sleep 15
 
 

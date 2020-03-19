@@ -11,8 +11,9 @@ namespace :clean do
       Report.destroy_all
       Account.destroy_all
       Tweet.destroy_all
-      Search.destroy_all
       Query.destroy_all
+      Search.destroy_all
+
 
 
   end
