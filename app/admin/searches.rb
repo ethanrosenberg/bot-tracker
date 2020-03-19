@@ -1,4 +1,4 @@
-require 'byebug'
+
 ActiveAdmin.register Search do
 
 
