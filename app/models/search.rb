@@ -14,7 +14,7 @@ class Search < ApplicationRecord
   end
 
   def self.stop_jobs(id)
-    
+
     Search.find(id).queries.each do |job|
       job.stop_job
     end
