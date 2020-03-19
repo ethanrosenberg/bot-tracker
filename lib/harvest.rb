@@ -5,12 +5,7 @@ module Harvest
 
   class Twitter
 
-    @client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = ENV["CONSUMER_KEY"]
-      config.consumer_secret     = ENV["CONSUMER_SECRET"]
-      config.access_token        = ENV["ACCESS_TOKEN"]
-      config.access_token_secret = ENV["ACCESS_SECRET"]
-    end
+
 
     @queue = :harvest
 
@@ -20,6 +15,13 @@ module Harvest
       @query_keyword = keyword
       @query = Query.find(query_id)
       @sleep = 7
+
+      @client = Twitter::REST::Client.new do |config|
+        config.consumer_key        = ENV["CONSUMER_KEY"]
+        config.consumer_secret     = ENV["CONSUMER_SECRET"]
+        config.access_token        = ENV["ACCESS_TOKEN"]
+        config.access_token_secret = ENV["ACCESS_SECRET"]
+      end
 
     end
 
@@ -57,7 +59,7 @@ module Harvest
         STDERR.puts "zzzzz... 15 seconds."
 
         results_count = 0
-        @@client.search(@query_keyword).take(50).each do |tweet|
+        @client.search(@query_keyword).take(50).each do |tweet|
 
           unless tweet_already_exists(tweet.id)
             create_tweet(tweet)
