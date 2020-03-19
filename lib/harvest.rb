@@ -22,10 +22,17 @@ module Harvest
     end
 
     def start
+
+      byebug
+
+      unless @query.search.status == 'finished' || @query.search.status == 'stopped'
         STDERR.puts "scraping keyword: #{@query_keyword}"
         STDERR.puts "zzzzz... 15 seconds."
 
-        sleep 15
+        sleep 30
+      end
+
+
 
 
       puts "Finished harvest."
