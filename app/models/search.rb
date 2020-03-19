@@ -10,8 +10,14 @@ class Search < ApplicationRecord
     Keyword.all.each do |keyword|
       #byebug
       self.queries.create(keyword: keyword.term)
+    end
   end
 
+  def stop_jobs
+    Query.where(:search_id => self.id).each do |job|
+      job.stop_job
+    end
+  end
 
 
 
@@ -19,7 +25,7 @@ class Search < ApplicationRecord
 
     #mark_finished
 
-  end
+
 
   def scrape_tweets(keyword, client)
 

@@ -15,4 +15,12 @@ class Query < ApplicationRecord
 
    end
 
+   def stop_job
+    if self.search.status != 'finished'
+      Resque::Job.destroy(:ask_scraper, Scrape::Ask, self.id)
+      self.search.status = 'finished'
+      save
+    end
+  end
+
 end

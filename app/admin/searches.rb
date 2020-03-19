@@ -2,11 +2,11 @@
 ActiveAdmin.register Search do
 
 
-  member_action :stop, method: :get do
+  #member_action :stop, method: :get do
     #byebug
     #Resque::Job.destroy(:scrape, Scrape)
-    redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
-  end
+  #  redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
+  #end
 
   form do |f|
     f.inputs "Search" do
@@ -45,29 +45,37 @@ ActiveAdmin.register Search do
       end
     end
 
-   def stopzzz
-     byebug
-
-   end
 
    def stop
+
+     Search.stop_jobs(params[:id])
      #byebug
      #Scrape.stop_job(params[:job_id])
-     puts "Stopping job..."
-     search = Search.find(params[:id])
-     search.status = 'stopped'
-     search.save
 
-     Resque::Job.destroy("scrape", Scrape)
+     #if self.status != 'finished'
+       #STDERR.puts "Stopping job...
+       #{}"
+      #  Resque::Job.destroy(:harvest, Harvest::Twitter, self.id)
+      #  self.status = 'finished'
+      #  save
+      #end
+
+
+     #puts "Stopping job..."
+     #search = Search.find(params[:id])
+     #search.status = 'stopped'
+     #search.save
+
+     #Resque::Job.destroy("scrape", Scrape)
      #Resque.workers.each(&:unregister_worker)
 
      #Resque.workers.each(&:unregister_worker)
 
 
-     respond_to do |format|
-         format.html { redirect_to '/admin/searches', notice: 'Scraping job was stopped.' }
-     end
-  end
+     #respond_to do |format|
+        # format.html { redirect_to '/admin/searches', notice: 'Scraping job was stopped.' }
+    # end
+   end
 
 
 
