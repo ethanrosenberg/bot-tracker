@@ -11,9 +11,8 @@ class Query < ApplicationRecord
    def start_job
      #byebug
      STDERR.puts "queueing twittery query... id: #{self.id} keyword: #{self.keyword}"
-     Resque.enqueue(Sleeper::Work, 3)
-     Resque.enqueue(Sleeper::Work, 5)
-     Resque.enqueue(Sleeper::Work, 8)
+     Resque.enqueue(self.id, Harvest::Twitter)
+
    end
 
 end

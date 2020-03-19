@@ -1,12 +1,13 @@
-class Harvest
+module Harvest
 
-    @queue = :harvest
+@queue = :harvest
 
+  class Twitter
     def initialize(query_id, keyword)
 
       @query_id = query_id
       @query_keyword = keyword
-      @query = Query.find(query_id)
+      #@query = Query.find(query_id)
       @sleep = 7
 
     end
@@ -18,15 +19,16 @@ class Harvest
     end
 
     def start
-      5.times do |item|
-        #byebug
-        puts "Sleeping for 10 seconds."
-        sleep 10
 
-      end
+        puts "scraping keyword: #{@query_keyword}"
+        puts "zzzzz... 10 seconds."
+        sleep 15
+
 
       puts "Finished harvest."
       #@word.finish
     end
+
+  end
 
 end
