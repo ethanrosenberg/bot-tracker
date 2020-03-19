@@ -23,7 +23,7 @@ module Harvest
 
     def start
 
-      byebug
+      #byebug
 
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
         STDERR.puts "scraping keyword: #{@query_keyword}"
