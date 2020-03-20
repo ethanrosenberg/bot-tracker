@@ -71,7 +71,7 @@ module Harvest
                 results_count += 1
               end
 
-              @query.search.results = results_count
+              @query.search.results += results_count
               @query.search.save
 
 
