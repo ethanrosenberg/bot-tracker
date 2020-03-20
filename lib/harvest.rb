@@ -14,7 +14,7 @@ module Harvest
       @query_id = query_id
       @query_keyword = keyword
       @query = Query.find(query_id)
-      @sleep = 7
+      @sleep = 30
 
       @client = Twitter::REST::Client.new do |config|
         config.consumer_key        = ENV["CONSUMER_KEY"]
@@ -55,8 +55,10 @@ module Harvest
 
       #byebug
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
-        Rails.logger.info "scraping keyword: #{@query_keyword}"
-        Rails.logger.info "search status: #{@query.search.status}"
+        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+          Rails.logger.info "scraping keyword: #{@query_keyword}"
+          Rails.logger.info "search status: #{@query.search.status}"
+        end
 
           results_count = 0
           @client.search(@query_keyword).take(5).each do |tweet|
@@ -75,15 +77,17 @@ module Harvest
 
 
           end
-
-          Rails.logger.info "zzzzz... #{@sleep} seconds."
+          Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+            Rails.logger.info "zzzzz... #{@sleep} seconds."
+          end
           sleep @sleep
 
       end
 
 
-
-      Rails.logger.info "Finished harvest."
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Finished harvest."
+      end
       #@word.finish
     end
 
