@@ -27,7 +27,8 @@ module Harvest
 
     def self.perform(query_id, keyword)
       #search = Search.create(status: 'working')
-      STDERR.puts "queryid: #{query_id} keyword: #{keyword}"
+      #Rails.logger.info "test again"
+      #STDERR.puts "queryid: #{query_id} keyword: #{keyword}"
       Harvest::TwitterWorker.new(query_id, keyword).start
     end
 
@@ -54,16 +55,14 @@ module Harvest
 
       #byebug
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
+        Rails.logger.info "scraping keyword: #{@query_keyword}"
+        Rails.logger.info "search status: #{@query.search.status}"
+
           results_count = 0
           @client.search(@query_keyword).take(5).each do |tweet|
 
-              STDERR.puts "scraping keyword: #{@query_keyword}"
-              STDERR.puts "search status: #{@query.search.status}"
-
-              logger.info(
-                  "Scraping Twitter Results...",
-                  query: {id: @query_id, keyword: @query_keyword}
-              )
+              #STDERR.puts
+              #STDERR.puts
 
               unless tweet_already_exists(tweet.id)
                 create_tweet(tweet)
@@ -73,17 +72,18 @@ module Harvest
               @query.search.results = results_count
               @query.search.save
 
-              STDERR.puts "zzzzz... 15 seconds."
+
 
           end
 
-          sleep 10
+          Rails.logger.info "zzzzz... #{@sleep} seconds."
+          sleep @sleep
 
       end
 
 
 
-      puts "Finished harvest."
+      Rails.logger.info "Finished harvest."
       #@word.finish
     end
 
