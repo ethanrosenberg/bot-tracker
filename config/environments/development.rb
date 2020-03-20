@@ -6,9 +6,11 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
 
   config.web_socket_server_url = "wss://localhost:3000/cable"
-  config.action_cable.allowed_request_origins = ['https://aqueous-shelf-54319.herokuapp.com', 'http://aqueous-shelf-54319.herokuapp.com']
+  #config.action_cable.allowed_request_origins = ['https://aqueous-shelf-54319.herokuapp.com', 'http://aqueous-shelf-54319.herokuapp.com']
+  #config.action_cable.allowed_request_origins = ['http://fiddle.jshell.net']
 
-  #ActionCable.server.config.disable_request_forgery_protection = true
+
+  ActionCable.server.config.disable_request_forgery_protection = true
 
   config.cache_classes = false
 
