@@ -54,7 +54,7 @@ module Harvest
     def start
 
       #byebug
-      results_count = 0
+      #results_count = 0
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
         Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
           Rails.logger.info "scraping keyword: #{@query_keyword}"
@@ -69,12 +69,13 @@ module Harvest
 
               unless tweet_already_exists(tweet.id)
                 create_tweet(tweet)
-                results_count += 1
+                @query.search.results = (@query.search.results || 0) + 1
+                @query.search.save
+                #esults_count += 1
               end
 
-              @query.search.results = @query.search.results + 1
-              @query.search.save
 
+              #@query.search.results += 1
 
 
           end
