@@ -53,43 +53,36 @@ module Harvest
     def start
 
       #byebug
+      unless @query.search.status == 'finished' || @query.search.status == 'stopped'
+          results_count = 0
+          @client.search(@query_keyword).take(5).each do |tweet|
 
-        results_count = 0
-        @client.search(@query_keyword).take(5).each do |tweet|
+              STDERR.puts "scraping keyword: #{@query_keyword}"
+              STDERR.puts "search status: #{@query.search.status}"
 
-          unless @query.search.status == 'finished' || @query.search.status == 'stopped'
-            STDERR.puts "scraping keyword: #{@query_keyword}"
-            STDERR.puts "search status: #{@query.search.status}"
+              logger.info(
+                  {}"Scraping Twitter Results...",
+                  query: {id: @query_id, keyword: @query_keyword}
+              )
 
-            #logger.info(
-                #{}"Order #1234 placed",
-              #  order_placed: {id: 1234, total: 100.54}
-            #)
+              unless tweet_already_exists(tweet.id)
+                create_tweet(tweet)
+                results_count += 1
+              end
 
-            unless tweet_already_exists(tweet.id)
-              create_tweet(tweet)
-              results_count += 1
-            end
+              @query.search.results = results_count
+              @query.search.save
 
-            @query.search.results = results_count
-            @query.search.save
-
-            STDERR.puts "zzzzz... 15 seconds."
+              STDERR.puts "zzzzz... 15 seconds."
 
           end
 
+          sleep 10
 
-
-        end
-
-
-
+      end
 
 
 
-
-      sleep 10
-      
       puts "Finished harvest."
       #@word.finish
     end
