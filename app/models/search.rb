@@ -7,7 +7,7 @@ class Search < ApplicationRecord
   def start_jobs
 
     ActionCable.server.broadcast 'messages',
-      message: self.results
+      message: 99
     #head :ok
 
 

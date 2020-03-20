@@ -1,17 +1,8 @@
 
-
-
-
-
-# config/cable.yml
-
-production:
+redis: &redis
   adapter: redis
   url: <%= ENV['REDISTOGO_URL'] %>
-  channel_prefix: bot-tracker_production
 
-development:
-  adapter: async
-
-test:
-  adapter: async
+production: *redis
+development: *redis
+test: *redis

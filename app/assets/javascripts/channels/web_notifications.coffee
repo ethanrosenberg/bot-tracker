@@ -1,4 +1,4 @@
-App.message = App.cable.subscriptions.create "MessageChannel",
+App.web_notifications = App.cable.subscriptions.create "WebNotificationsChannel",
   connected: ->
     # Called when the subscription is ready for use on the server
 
@@ -7,6 +7,3 @@ App.message = App.cable.subscriptions.create "MessageChannel",
 
   received: (data) ->
     # Called when there's incoming data on the websocket for this channel
-
-  speak: ->
-    @perform 'speak'
