@@ -111,6 +111,10 @@ ActiveAdmin.register Search do
       end
     end
 
+    column "Cable" do |cb|
+      render html: "<div id='messages'></div>".html_safe
+    end
+
   end
 
 
