@@ -10,16 +10,15 @@ class Search < ApplicationRecord
       #message: 99
     #head :ok
 
-    ActionCable.server.broadcast 'web_notifications_channel',
-        message: 77
-      head :ok
+
+      ActionCable.server.broadcast 'web_notifications_channel', message: 77
 
 
-    STDERR.puts "starting twitter scraper..."
-    Keyword.all.each do |keyword|
+    #STDERR.puts "starting twitter scraper..."
+    #Keyword.all.each do |keyword|
       #byebug
-      self.queries.create(keyword: keyword.term)
-    end
+      #self.queries.create(keyword: keyword.term)
+    #end
   end
 
   def self.stop_jobs(id)
