@@ -99,12 +99,13 @@ ActiveAdmin.register Search do
     end
    column "Status", :status
    column "Results", :results
+   column "Progress" do |prog|
+     render html: "<div class='progress'><div class='progress-bar' role='progressbar' style='width: 25%;' aria-valuenow='25' aria-valuemax='100' aria-valuemin='0'>25%</div></div>".html_safe
+   end
    column "Date Created", :created_at
    column "Stop Search" do |job|
-      if job.status == 'finished'
+      if job.status == 'finished' || job.status = 'stopped'
         'Done'
-      elsif job.status == 'stopped'
-        'Stopped'
       else
         link_to "Stop", "/admin/searches/#{job.id}/stop/"
       end

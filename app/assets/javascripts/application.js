@@ -15,3 +15,5 @@
 //= require turbolinks
 //= require_tree .
 //= require local-time
+//= require jquery
+//= require_tree ./channels

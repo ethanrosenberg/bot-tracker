@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   mount ResqueWeb::Engine => "/resque_web"
 
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
+
+
   #root to: 'home#index'
   root :to => redirect('/admin')
 

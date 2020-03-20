@@ -18,8 +18,12 @@ gem 'after_do'
 gem 'resque-status'
 gem 'sidekiq', '5.2.7'
 
+gem 'bootstrap', '~> 4.0.0.alpha6'
+
 gem 'timber', '~> 3.0'
 gem 'timber-rails', '~> 1.0' # optional
+
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.1'

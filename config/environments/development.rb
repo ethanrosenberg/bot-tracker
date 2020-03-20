@@ -5,7 +5,9 @@ Rails.application.configure do
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
 
-
+  Rails.application.configure do
+    config.action_cable.url = "ws://localhost:3000/cable"
+  end 
 
   config.cache_classes = false
 

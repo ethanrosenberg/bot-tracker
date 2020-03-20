@@ -6,6 +6,11 @@ class Search < ApplicationRecord
 
   def start_jobs
 
+      ActionCable.server.broadcast 'messages',
+        results: self.results
+      head :ok
+
+
     STDERR.puts "starting twitter scraper..."
     Keyword.all.each do |keyword|
       #byebug

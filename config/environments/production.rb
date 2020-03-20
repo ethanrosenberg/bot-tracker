@@ -1,6 +1,10 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+
+config.web_socket_server_url = "wss://aqueous-shelf-54319.herokuapp.com/cable"
+config.action_cable.allowed_request_origins = ['https://aqueous-shelf-54319.herokuapp.com', 'http://aqueous-shelf-54319.herokuapp.com']
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
