@@ -17,5 +17,6 @@
 //= require turbolinks
 //= require_tree .
 //= require local-time
+//= require cable
 //= require_tree ./channels
 //= require cable.coffee
