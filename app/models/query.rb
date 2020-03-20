@@ -21,7 +21,7 @@ class Query < ApplicationRecord
      #byebug
     if self.search.status != 'finished'
       Resque::Job.destroy(:harvest, Harvest::TwitterWorker, self.id, self.keyword)
-      self.search.status = 'finished'
+      self.search.status = 'stopped'
       self.search.save
     end
   end
