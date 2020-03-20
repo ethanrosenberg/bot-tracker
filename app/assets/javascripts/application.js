@@ -17,3 +17,4 @@
 //= require local-time
 //= require jquery
 //= require_tree ./channels
+//= require cable
