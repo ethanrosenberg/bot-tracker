@@ -5,7 +5,10 @@ Rails.application.configure do
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
 
-  config.web_socket_server_url = "wss://localhost:3000/cable"
+  #config.web_socket_server_url = "ws://localhost:3000/cable"
+    Rails.application.configure do
+    config.action_cable.url = "ws://localhost:3000/cable"
+  end
 
   #config.action_cable.allowed_request_origins = ['https://aqueous-shelf-54319.herokuapp.com', 'http://aqueous-shelf-54319.herokuapp.com']
   #config.action_cable.allowed_request_origins = ['http://fiddle.jshell.net']

@@ -10,6 +10,10 @@ class Search < ApplicationRecord
       #message: 99
     #head :ok
 
+    ActionCable.server.broadcast 'web_notifications_channel',
+        message: 77
+      head :ok
+
 
     STDERR.puts "starting twitter scraper..."
     Keyword.all.each do |keyword|

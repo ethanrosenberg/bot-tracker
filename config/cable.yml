@@ -1,8 +1,10 @@
 
-redis: &redis
+production:
   adapter: redis
   url: <%= ENV['REDISTOGO_URL'] %>
 
-production: *redis
-development: *redis
-test: *redis
+development:
+  adapter: async
+
+test:
+  adapter: async
