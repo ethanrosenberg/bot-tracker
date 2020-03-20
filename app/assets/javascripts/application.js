@@ -17,3 +17,4 @@
 //= require_tree .
 //= require local-time
 //= require_tree ./channels
+//= require page.coffee
