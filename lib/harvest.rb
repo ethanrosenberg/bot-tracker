@@ -78,7 +78,7 @@ module Harvest
 
           end
 
-          sleep 10
+
 
         end
 
@@ -88,7 +88,8 @@ module Harvest
 
 
 
-
+      sleep 10
+      
       puts "Finished harvest."
       #@word.finish
     end
