@@ -7,6 +7,8 @@ Rails.application.configure do
 
   Rails.application.configure do
     config.action_cable.url = "ws://localhost:3000/cable"
+    config.action_cable.allowed_request_origins = [/http:\/\/*/,
+/https:\/\/*/]
   end
 
   config.cache_classes = false
