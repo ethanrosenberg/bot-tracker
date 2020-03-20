@@ -347,6 +347,15 @@ GEM
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    timber (3.0.1)
+      msgpack (~> 1.0)
+    timber-rack (1.0.1)
+      rack (>= 1.2, < 3.0)
+      timber (~> 3.0)
+    timber-rails (1.0.1)
+      rails (>= 3.0.0, < 6.0.0)
+      timber (~> 3.0)
+      timber-rack (~> 1.0)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -413,6 +422,8 @@ DEPENDENCIES
   sidekiq (= 5.2.7)
   spring
   spring-watcher-listen (~> 2.0.0)
+  timber (~> 3.0)
+  timber-rails (~> 1.0)
   turbolinks (~> 5)
   twitter
   tzinfo-data

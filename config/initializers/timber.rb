@@ -1,0 +1,4 @@
+if Rails.env.development?
+  http_device = Timber::LogDevices::HTTP.new("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS50aW1iZXIuaW8vIiwiZXhwIjpudWxsLCJpYXQiOjE1ODQ2NjQ1ODksImlzcyI6Imh0dHBzOi8vYXBpLnRpbWJlci5pby9hcGlfa2V5cyIsInByb3ZpZGVyX2NsYWltcyI6eyJhcGlfa2V5X2lkIjo2OTMwLCJ1c2VyX2lkIjoiYXBpX2tleXw2OTMwIn0sInN1YiI6ImFwaV9rZXl8NjkzMCJ9.TbahSlhUkhNsJUc2Qy1SlsRA6UHNgAJdzverYUEwK5s", "34815")
+  Rails.logger = Timber::Logger.new(http_device)
+end
