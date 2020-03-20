@@ -2,11 +2,16 @@
 <html>
   <head>
     <title>BotTracker</title>
+
+  
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= action_cable_meta_tag %>
-    
+    <meta name="action-cable-url" content="wss://localhost:3000/cable" />
+
+
+
+
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>

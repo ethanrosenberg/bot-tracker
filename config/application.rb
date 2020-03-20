@@ -22,6 +22,8 @@ module BotTracker
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
+    #config.assets.enabled = true
+
     ## for using ActiveJob
     #config.active_job.queue_adapter = :resque
 
