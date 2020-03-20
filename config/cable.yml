@@ -10,8 +10,6 @@ production:
   channel_prefix: bot-tracker_production
 
 
-REDISTOGO_URL
-
 
 # config/cable.yml
 
