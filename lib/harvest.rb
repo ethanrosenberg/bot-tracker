@@ -61,7 +61,7 @@ module Harvest
               STDERR.puts "search status: #{@query.search.status}"
 
               logger.info(
-                  {}"Scraping Twitter Results...",
+                  "Scraping Twitter Results...",
                   query: {id: @query_id, keyword: @query_keyword}
               )
 
