@@ -2,6 +2,7 @@ class Search < ApplicationRecord
   after_create :start_jobs
   #after_commit :update_progress
   #after_update :update_progress
+  after
 
   has_many :queries
 
@@ -21,6 +22,8 @@ class Search < ApplicationRecord
 
       self.queries.create(keyword: keyword.term, status: "working")
     end
+
+
 
   end
 

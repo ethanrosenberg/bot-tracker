@@ -3,6 +3,7 @@
 
 class Query < ApplicationRecord
    after_create :start_job
+   after_save :check_for_finish
    belongs_to :search
 
 
@@ -15,6 +16,14 @@ class Query < ApplicationRecord
      end
      Resque.enqueue(Harvest::TwitterWorker, self.id, self.keyword)
 
+   end
+
+   def check_for_finish
+     finished_count = Query.where(status: "done").where(search_id: self.search.id).count
+     if finished_count === self.search.queries.count
+       self.search.status = 'finished'
+       self.search.save
+     end
    end
 
    def stop_job
