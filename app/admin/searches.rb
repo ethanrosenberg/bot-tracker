@@ -112,7 +112,7 @@ ActiveAdmin.register Search do
     end
 
     column "Cable" do |cb|
-      render html: "<div id='messages'>#{job.results}</div>".html_safe
+      render html: "<div id='messages'>#{cb.results}</div>".html_safe
     end
 
   end
