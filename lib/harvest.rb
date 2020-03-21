@@ -59,9 +59,16 @@ module Harvest
     def get_percentage_done
       current_done = Query.where("status = ?", 'done').count
       queries_count = Keyword.all.count
+
+
       percentage = ((current_done.to_f.round(2) / queries_count.to_f.round(2)) * 100).round(1).to_i.to_s
       @query.search.percent_finished = percentage
       @query.search.save
+
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Updating progress: #{@query_keyword} #{percentage}% - current_done: #{current_done} total_queries: #{queries_count}"
+      end
+
       percentage + "%"
     end
 
