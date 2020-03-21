@@ -67,7 +67,7 @@ module Harvest
       @query.search.save
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-        Rails.logger.info "Updating progress: #{@query_keyword} #{percentage}% - current_done: #{current_done} total_queries: #{queries_count}"
+        Rails.logger.info "Updating progress: #{@query_keyword} #{current_percentage}% - current_done: #{current_done} total_queries: #{queries_count}"
       end
 
       current_percentage
