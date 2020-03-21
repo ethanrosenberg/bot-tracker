@@ -19,8 +19,14 @@ class Query < ApplicationRecord
    end
 
    def check_for_finish
-     finished_count = Query.where(status: "done").where(search_id: self.search.id).count
-     if finished_count === self.search.queries.count
+
+     self.search.queries.each do |query|
+       if query.status == "done"
+         count +=1
+       end
+     end
+     #finished_count = Query.where(status: "done").where(search_id: self.search.id).count
+     if count === self.search.queries.count
        self.search.status = 'finished'
        self.search.save
      end
