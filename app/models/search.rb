@@ -1,8 +1,12 @@
 class Search < ApplicationRecord
   after_create :start_jobs
+  after_commit :update_progress
 
   has_many :queries
 
+  def update_progress
+    ActionCable.server.broadcast 'web_notifications_channel', message: self.results, id: self.id
+  end
 
   def start_jobs
 
@@ -11,7 +15,7 @@ class Search < ApplicationRecord
     #head :ok
 
 
-      ActionCable.server.broadcast 'web_notifications_channel', message: 77, id: self.id
+
 
 
     #STDERR.puts "starting twitter scraper..."
