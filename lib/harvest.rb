@@ -5,9 +5,9 @@ module Harvest
 
   class TwitterWorker
 
-    TWEETS_PER_TIMELINE = 200
-    TWEETS_PER_KEYWORD = 25
-    SLEEP = 7
+    #TWEETS_PER_TIMELINE = Setting.first.tweets_per_timeline if Setting.first.nil?
+    #TWEETS_PER_KEYWORD = 25
+    #SLEEP = 7
 
     @queue = :harvest
 
@@ -16,6 +16,15 @@ module Harvest
       @query_id = query_id
       @query_keyword = keyword
       @query = Query.find(query_id)
+      if !Setting.first.nil?
+        @tweets_per_timeline = Setting.first.tweets_per_timeline
+        @tweets_per_keyword = Setting.first.tweets_per_keyword
+        @sleep = Setting.first.sleep
+      else
+        @tweets_per_timeline = 200
+        @tweets_per_keyword = 25
+        @sleep = 7
+      end
 
 
 
@@ -79,7 +88,7 @@ module Harvest
       returned_count = 0;
       retweet_count = 0
       puts "Getting user id: #{user_id} tweets..."
-      @client.user_timeline(user_id, count: TWEETS_PER_TIMELINE).each do |tweet|
+      @client.user_timeline(user_id, count: @tweets_per_timeline).each do |tweet|
 
         if !tweet.retweeted_status.blank?
           retweet_count += 1
@@ -90,7 +99,7 @@ module Harvest
       percentage = ((retweet_count.to_f.round(2) / returned_count.to_f.round(2)) * 100).round(1).to_i.to_s
 
       puts "Sleeping before next timeline harvest..."
-      sleep SLEEP
+      sleep @sleep
 
       { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count }
 
@@ -131,6 +140,10 @@ module Harvest
 
     def start
 
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+      end
+
       #byebug
       #results_count = 0
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
@@ -139,7 +152,7 @@ module Harvest
           Rails.logger.info "search status: #{@query.search.status}"
         end
 
-          @client.search(@query_keyword).take(TWEETS_PER_KEYWORD).each do |tweet|
+          @client.search(@query_keyword).take(@tweets_per_keyword).each do |tweet|
 
             create_account(tweet)
 
@@ -152,11 +165,11 @@ module Harvest
 
           end
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-            Rails.logger.info "zzzzz... #{SLEEP} seconds."
+            Rails.logger.info "zzzzz... #{@sleep} seconds."
           end
 
 
-          sleep SLEEP
+          sleep @sleep
 
       end
 
