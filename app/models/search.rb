@@ -19,10 +19,10 @@ class Search < ApplicationRecord
 
 
     #STDERR.puts "starting twitter scraper..."
-    #Keyword.all.each do |keyword|
-      #byebug
-      #self.queries.create(keyword: keyword.term)
-    #end
+    Keyword.all.each do |keyword|
+      byebug
+      self.queries.create(keyword: keyword.term)
+    end
   end
 
   def self.stop_jobs(id)
