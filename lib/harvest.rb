@@ -97,13 +97,15 @@ module Harvest
             Rails.logger.info "zzzzz... #{@sleep} seconds."
           end
 
-          update_progress()
+
           sleep @sleep
 
       end
 
       @query.status = "done"
       @query.save
+
+      update_progress()
 
       #update_progress()
 
