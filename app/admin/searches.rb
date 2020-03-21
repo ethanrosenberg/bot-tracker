@@ -98,11 +98,21 @@ ActiveAdmin.register Search do
       end
     end
    column "Status", :status
-   column "Results", :results
-   column "Progress" do |prog|
-     render html: "<div class='progress'><div class='progress-bar' role='progressbar' style='width: 25%;' aria-valuenow='25' aria-valuemax='100' aria-valuemin='0'>25%</div></div>".html_safe
+   column "Results" do |res|
+     render html: "<div id='messages'>#{res.results}</div>".html_safe
    end
-   column "Date Created", :created_at
+   column "Progress" do |prog|
+     if prog.status != 'finished'
+     render html: "<div id='myProgress'>
+                     <div id='myBar' style='--width: #{prog.percent_finished}%;'>#{prog.percent_finished}%</div>
+                   </div>".html_safe
+     else
+       render html: "<div id='myProgress'>
+                       <div id='myBar' style='--width: 100%;'>100%</div>
+                     </div>".html_safe
+     end
+   end
+
    column "Stop Search" do |job|
       if job.status == 'finished' || job.status == 'stopped'
         'Done'
@@ -110,22 +120,10 @@ ActiveAdmin.register Search do
         link_to "Stop", "/admin/searches/#{job.id}/stop/"
       end
     end
+    column "Date Created", :created_at
 
-    column "Cable" do |cb|
-      render html: "<div id='messages'>#{cb.results}</div>".html_safe
-    end
-    column "Progress" do |prog|
 
-      if prog.status != 'finished'
-      render html: "<div id='myProgress'>
-                      <div id='myBar' style='--width: #{prog.percent_finished}%;'>#{prog.percent_finished}%</div>
-                    </div>".html_safe
-      else
-        render html: "<div id='myProgress'>
-                        <div id='myBar' style='--width: 100%;'>100%</div>
-                      </div>".html_safe
-      end
-    end
+
 
   end
 
