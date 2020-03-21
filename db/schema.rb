@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_21_050629) do
+ActiveRecord::Schema.define(version: 2020_03_21_214825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,14 @@ ActiveRecord::Schema.define(version: 2020_03_21_050629) do
     t.string "status"
     t.integer "results"
     t.integer "percent_finished"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer "sleep"
+    t.integer "tweets_per_keyword"
+    t.integer "tweets_per_timeline"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tweets", force: :cascade do |t|
