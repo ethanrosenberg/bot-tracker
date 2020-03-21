@@ -14,7 +14,7 @@ module Harvest
       @query_id = query_id
       @query_keyword = keyword
       @query = Query.find(query_id)
-      @sleep = 30
+      @sleep = 7
 
       @client = Twitter::REST::Client.new do |config|
         config.consumer_key        = ENV["CONSUMER_KEY"]
@@ -57,7 +57,8 @@ module Harvest
     end
 
     def get_percentage_done
-      current_done = Query.where("status = ?", 'done').count
+      #current_done = Query.where("status = ?", 'done').count
+      current_done = Query.where(status: "done").where(search_id: @query.search_id).count
       queries_count = Keyword.all.count
 
 
