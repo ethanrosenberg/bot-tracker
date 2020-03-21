@@ -58,7 +58,7 @@ module Harvest
 
     def get_percentage_done
       #current_done = Query.where("status = ?", 'done').count
-      current_done = Query.where(status: "done").where(search_id: @query.search_id).count
+      current_done = Query.where(status: "done").where(search_id: @query.search_id).count + 1
       queries_count = Keyword.all.count
 
 
@@ -104,7 +104,8 @@ module Harvest
 
       @query.status = "done"
       @query.save
-
+      
+      update_progress()
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Finished harvest."
