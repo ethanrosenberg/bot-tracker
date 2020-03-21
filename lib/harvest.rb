@@ -5,7 +5,9 @@ module Harvest
 
   class TwitterWorker
 
-
+    TWEETS_PER_TIMELINE = 200
+    TWEETS_PER_KEYWORD = 5
+    SLEEP = 7
 
     @queue = :harvest
 
@@ -14,7 +16,8 @@ module Harvest
       @query_id = query_id
       @query_keyword = keyword
       @query = Query.find(query_id)
-      @sleep = 7
+
+
 
       @client = Twitter::REST::Client.new do |config|
         config.consumer_key        = ENV["CONSUMER_KEY"]
@@ -26,9 +29,6 @@ module Harvest
     end
 
     def self.perform(query_id, keyword)
-      #search = Search.create(status: 'working')
-      #Rails.logger.info "test again"
-      #STDERR.puts "queryid: #{query_id} keyword: #{keyword}"
       Harvest::TwitterWorker.new(query_id, keyword).start
     end
 
@@ -73,6 +73,62 @@ module Harvest
       current_percentage
     end
 
+    def get_user_tweets_percentage(user_id)
+
+
+      returned_count = 0;
+      retweet_count = 0
+      puts "Getting user id: #{user_id} tweets..."
+      @client.user_timeline(user_id, count: TWEETS_PER_TIMELINE).each do |tweet|
+
+        if !tweet.retweeted_status.blank?
+          retweet_count += 1
+        end
+        returned_count += 1
+      end
+
+      percentage = ((retweet_count.to_f.round(2) / returned_count.to_f.round(2)) * 100).round(1).to_i.to_s
+
+      puts "Sleeping before next timeline harvest..."
+      sleep SLEEP
+
+      { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count }
+
+
+    end
+
+    def check_for_default_picture(url)
+     if url.include? "https://abs.twimg.com/sticky/default_profile_images/default_profile"
+       return true
+     else
+       return false
+     end
+
+    end
+
+    def create_account(tweet)
+      #byebug
+      if Account.where(:user_id => tweet.user.id).blank?
+        Account.create do |ac|
+            ac.user_id = tweet.user.id
+            ac.creation_date = tweet.user.created_at
+            ac.handle = tweet.user.screen_name
+            ac.profile_image_url = tweet.user.profile_image_url_https.to_s
+            ac.followers = tweet.user.followers_count
+            ac.tweet_count = tweet.user.statuses_count
+            default_url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+            ac.default_profile_pic = check_for_default_picture(tweet.user.profile_image_url_https.to_s)
+            #byebug
+            percentage_data = get_user_tweets_percentage(tweet.user.id)
+            #{ retweet_percentage: percentage, collected: returned_count, retweet_count: retweet_count }
+            ac.rt_percentage = "RT Stats: #{percentage_data[:retweet_percentage]}% (retweets: #{percentage_data[:retweets]}, collected: #{percentage_data[:collected]})"
+
+        end
+      end
+
+
+    end
+
     def start
 
       #byebug
@@ -83,7 +139,9 @@ module Harvest
           Rails.logger.info "search status: #{@query.search.status}"
         end
 
-          @client.search(@query_keyword).take(5).each do |tweet|
+          @client.search(@query_keyword).take(TWEETS_PER_KEYWORD).each do |tweet|
+
+            create_account(tweet)
 
               unless tweet_already_exists(tweet.id)
                 create_tweet(tweet)
@@ -94,11 +152,11 @@ module Harvest
 
           end
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-            Rails.logger.info "zzzzz... #{@sleep} seconds."
+            Rails.logger.info "zzzzz... #{SLEEP} seconds."
           end
 
 
-          sleep @sleep
+          sleep SLEEP
 
       end
 
