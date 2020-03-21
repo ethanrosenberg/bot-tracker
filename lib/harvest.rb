@@ -85,6 +85,8 @@ module Harvest
     def get_user_tweets_percentage(user_id)
 
 
+      puts "Getting timeline with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+
       returned_count = 0;
       retweet_count = 0
       puts "Getting user id: #{user_id} tweets..."
@@ -97,6 +99,8 @@ module Harvest
       end
 
       percentage = ((retweet_count.to_f.round(2) / returned_count.to_f.round(2)) * 100).round(1).to_i.to_s
+
+
 
       puts "Sleeping before next timeline harvest..."
       sleep @sleep
@@ -143,6 +147,8 @@ module Harvest
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
       end
+
+      puts "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
 
       #byebug
       #results_count = 0
