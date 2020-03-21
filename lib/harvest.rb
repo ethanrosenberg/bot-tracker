@@ -63,7 +63,7 @@ module Harvest
 
 
       current_percentage = ((current_done.to_f.round(2) / queries_count.to_f.round(2)) * 100).round(1).to_i.to_s
-      @query.search.percent_finished = percentage
+      @query.search.percent_finished = current_percentage
       @query.search.save
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
