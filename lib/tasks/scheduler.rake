@@ -18,7 +18,7 @@ namespace :scheduler do
       #require 'scrape'
       #include Scrape
       #Scrape.new_search
-      Search.create(status: "working")
+      Search.create(status: "working", percent_finished: 0)
 
       #Resque.enqueue(Sleeper::Wake, 5)
 

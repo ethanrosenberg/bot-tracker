@@ -6,7 +6,7 @@ module Harvest
   class TwitterWorker
 
     TWEETS_PER_TIMELINE = 200
-    TWEETS_PER_KEYWORD = 5
+    TWEETS_PER_KEYWORD = 50
     SLEEP = 7
 
     @queue = :harvest
