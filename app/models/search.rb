@@ -11,7 +11,7 @@ class Search < ApplicationRecord
     #head :ok
 
 
-      ActionCable.server.broadcast 'web_notifications_channel', message: 77
+      ActionCable.server.broadcast 'web_notifications_channel', message: 77, id: self.id
 
 
     #STDERR.puts "starting twitter scraper..."

@@ -1,10 +1,7 @@
-
-production:
+redis: &redis
   adapter: redis
-  url: <%= ENV['REDISTOGO_URL'] %>
+  url: redis://redistogo:0849dec256b4e8d321bd8e4ac283e22f@pearlfish.redistogo.com:9145/
 
-development:
-  adapter: async
-
-test:
-  adapter: async
+production: *redis
+development: *redis
+test: *redis

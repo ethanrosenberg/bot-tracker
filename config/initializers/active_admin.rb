@@ -6,6 +6,9 @@ ActiveAdmin.setup do |config|
   #
   config.site_title = "Bot Tracker"
 
+  config.register_javascript 'cable.js'
+  config.register_javascript 'page'
+
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.
   #
@@ -179,7 +182,8 @@ ActiveAdmin.setup do |config|
   # Add additional meta tags to the head element of active admin pages.
   #
   # Add tags to all pages logged in users see:
-     config.meta_tags = { "action-cable-url": "wss://aqueous-shelf-54319.herokuapp.com/cable" }
+     #config.meta_tags = { "action-cable-url": "wss://aqueous-shelf-54319.herokuapp.com/cable" }
+
   # By default, sign up/sign in/recover password pages are excluded
   # from showing up in search engine results by adding a robots meta
   # tag. You can reset the hash of meta tags included in logged out

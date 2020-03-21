@@ -12,11 +12,7 @@
 //
 //= require rails-ujs
 //= require jquery
-//= require page.coffee
 //= require activestorage
 //= require turbolinks
 //= require_tree .
 //= require local-time
-//= require cable
-//= require_tree ./channels
-//= require cable.coffee
