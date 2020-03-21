@@ -20,6 +20,7 @@ class Query < ApplicationRecord
 
    def check_for_finish
 
+     count = 0
      self.search.queries.each do |query|
        if query.status == "done"
          count +=1
