@@ -104,7 +104,7 @@ ActiveAdmin.register Search do
    end
    column "Date Created", :created_at
    column "Stop Search" do |job|
-      if job.status == 'finished'
+      if job.status == 'finished' || job.status == 'stopped'
         'Done'
       else
         link_to "Stop", "/admin/searches/#{job.id}/stop/"
@@ -113,6 +113,18 @@ ActiveAdmin.register Search do
 
     column "Cable" do |cb|
       render html: "<div id='messages'>#{cb.results}</div>".html_safe
+    end
+    column "Progress" do |prog|
+
+      if prog.status != 'finished'
+      render html: "<div id='myProgress'>
+                      <div id='myBar' style='--width: #{prog.percent_finished}%;'>#{prog.percent_finished}%</div>
+                    </div>".html_safe
+      else
+        render html: "<div id='myProgress'>
+                        <div id='myBar' style='--width: 100%;'>100%</div>
+                      </div>".html_safe
+      end
     end
 
   end

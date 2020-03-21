@@ -51,6 +51,20 @@ module Harvest
       Tweet.where(:tweet_id => id).blank? ? false : true
     end
 
+    def update_progress
+      percent_finished_string = get_percentage_done()
+      ActionCable.server.broadcast 'web_notifications_channel', message: percent_finished_string, id: self.search.id
+    end
+
+    def get_percentage_done
+      current_done = Query.where("status = ?", 'done').count
+      queries_count = Keyword.all.count
+      percentage = ((current_done.to_f.round(2) / queries_count.to_f.round(2)) * 100).round(1).to_i.to_s
+      @query.search.percent_finished = percentage
+      @query.search.save
+      percentage + "%"
+    end
+
     def start
 
       #byebug
@@ -61,11 +75,7 @@ module Harvest
           Rails.logger.info "search status: #{@query.search.status}"
         end
 
-
           @client.search(@query_keyword).take(5).each do |tweet|
-
-              #STDERR.puts
-              #STDERR.puts
 
               unless tweet_already_exists(tweet.id)
                 create_tweet(tweet)
@@ -74,17 +84,18 @@ module Harvest
                 #esults_count += 1
               end
 
-
-              #@query.search.results += 1
-
-
           end
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
             Rails.logger.info "zzzzz... #{@sleep} seconds."
           end
+
+          update_progress()
           sleep @sleep
 
       end
+
+      @query.status = "done"
+      @query.save
 
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do

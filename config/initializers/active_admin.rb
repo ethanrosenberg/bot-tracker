@@ -8,6 +8,7 @@ ActiveAdmin.setup do |config|
 
   config.register_javascript 'cable.js'
   config.register_javascript 'page'
+  config.register_javascript 'progress.js'
 
   # Set the link url for the title. For example, to take
   # users to your main site. Defaults to no link.

@@ -1,11 +1,13 @@
 class Search < ApplicationRecord
   after_create :start_jobs
-  after_commit :update_progress
+  #after_commit :update_progress
+  #after_update :update_progress
 
   has_many :queries
 
   def update_progress
-    ActionCable.server.broadcast 'web_notifications_channel', message: self.results, id: self.id
+
+    ActionCable.server.broadcast 'web_notifications_channel', message: self.percent_finished, id: self.id
   end
 
   def start_jobs
@@ -14,16 +16,15 @@ class Search < ApplicationRecord
       #message: 99
     #head :ok
 
-
-
-
-
     #STDERR.puts "starting twitter scraper..."
     Keyword.all.each do |keyword|
 
-      self.queries.create(keyword: keyword.term)
+      self.queries.create(keyword: keyword.term, status: "working")
     end
+
   end
+
+
 
   def self.stop_jobs(id)
 
