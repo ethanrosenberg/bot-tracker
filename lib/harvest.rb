@@ -294,7 +294,7 @@ module Harvest
       #byebug
 
       accounts.each do |new_account|
-        byebug
+
         create_account(new_account)
 
         @current_done += 1
@@ -302,6 +302,9 @@ module Harvest
 
         Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
           Rails.logger.info "total accoounts: #{@current_done}"
+        end
+        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+          Rails.logger.info "search status: #{@search.status}"
         end
 
         puts "Sleeping before next timeline harvest..."
@@ -311,6 +314,10 @@ module Harvest
 
       @search.status == 'finished'
       @search.save
+
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "search status: #{@search.status}"
+      end
 
   end
 
