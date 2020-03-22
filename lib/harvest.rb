@@ -307,7 +307,10 @@ module Harvest
           Rails.logger.info "search status: #{@search.status}"
         end
 
-        puts "Sleeping before next timeline harvest..."
+        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+          Rails.logger.info "Sleeping before next timeline harvest..."
+        end
+
         sleep @sleep
 
       end
@@ -403,7 +406,9 @@ module Harvest
   end
 
   def update_progress
-    percent_finished_string = get_percentage_done()
+    #percent_finished_string = get_percentage_done()
+    @search.update_progress(@percent_finished)
+
     ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @percent_finished, status: @search.status, results: @search.results
   end
 

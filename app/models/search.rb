@@ -30,7 +30,7 @@ class Search < ApplicationRecord
 
   end
 
-  
+
 
 
 
@@ -94,6 +94,11 @@ class Search < ApplicationRecord
 
   def mark_finished
     self.status = 'finished'
+    save
+  end
+
+  def update_progress(progress)
+    self.percent_finished = progress
     save
   end
 

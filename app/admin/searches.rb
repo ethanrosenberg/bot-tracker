@@ -98,7 +98,11 @@ ActiveAdmin.register Search do
       end
     end
    column "Status", :status
-   column "Results" do |res|
+   #column "Accounts Harvested" do |res|
+     #render html: "<div id='messages'>#{res.results}</div>".html_safe
+    # render html: "<div id='accounts'>#{res.results}</div>".html_safe
+   #end
+   column "Tweets Harvested" do |res|
      #render html: "<div id='messages'>#{res.results}</div>".html_safe
      render html: "<div id='messages'>#{res.results}</div>".html_safe
    end

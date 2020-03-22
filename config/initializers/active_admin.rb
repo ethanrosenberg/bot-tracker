@@ -12,6 +12,7 @@ ActiveAdmin.setup do |config|
   config.register_javascript 'text'
   config.register_javascript 'results'
   config.register_javascript 'status'
+  config.register_javascript 'accounts'
 
 
   # Set the link url for the title. For example, to take
