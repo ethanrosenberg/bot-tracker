@@ -47,7 +47,7 @@ module Harvest
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
       end
-      puts "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+      #puts "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
 
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
         Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
@@ -66,7 +66,12 @@ module Harvest
                 create_tweet(tweet)
                 @query.search.results = (@query.search.results || 0) + 1
                 @query.search.save
-                puts "Search -> Query -> Results= : #{@query.search.results}"
+
+                Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+                  Rails.logger.info "Search -> Query -> Results= : #{@query.search.results}"
+                end
+
+
                 #esults_count += 1
               end
 
@@ -205,7 +210,10 @@ module Harvest
     @percent_finished = 0
 
     def initialize(search_id)
-      puts "Initialized! search_id: #{search_id}"
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Initialized! search_id: #{search_id}"
+      end
+
       @search_id = search_id
       @search = Search.find(search_id)
       if !Setting.first.nil?
@@ -226,7 +234,11 @@ module Harvest
 
 
   def self.perform(search_id)
-    puts "Trying to start async search..."
+
+    Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+      Rails.logger.info "Trying to start async search..."
+    end
+
     Harvest::ResultsWorker.new(search_id).start
   end
 
@@ -244,7 +256,12 @@ module Harvest
             @queries_count += 1
           end
         end
-        puts "#{query.keyword} Query Count : - #{@queries_count}"
+
+        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+          Rails.logger.info "#{query.keyword} Query Count : - #{@queries_count}"
+        end
+
+
       end
 
       accounts.each do |new_account|
@@ -252,7 +269,10 @@ module Harvest
 
         @current_done += 1
         update_progress()
-        puts "total accoounts: #{@current_done}"
+
+        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+          Rails.logger.info "total accoounts: #{@current_done}"
+        end
 
 
         puts "Sleeping before next timeline harvest..."
