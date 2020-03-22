@@ -244,6 +244,10 @@ module Harvest
         create_account(new_account)
 
         update_progress()
+
+        puts "Sleeping before next timeline harvest..."
+        sleep @sleep
+
       end
 
   end
@@ -294,8 +298,7 @@ module Harvest
 
 
 
-    puts "Sleeping before next timeline harvest..."
-    sleep @sleep
+
 
     { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count }
 
@@ -320,7 +323,7 @@ module Harvest
   end
 
 
-
+##ActionCable.server.broadcast 'web_notifications_channel', message: 55, id: 416
 
 
   end
