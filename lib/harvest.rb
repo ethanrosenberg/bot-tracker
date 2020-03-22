@@ -231,6 +231,10 @@ module Harvest
         config.access_token        = ENV["ACCESS_TOKEN"]
         config.access_token_secret = ENV["ACCESS_SECRET"]
       end
+
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Initialized! Success!"
+      end
     end
 
 
@@ -240,10 +244,14 @@ module Harvest
       Rails.logger.info "Trying to start async search..."
     end
 
-    Harvest::ResultsWorker.new(search_id).start
+    Harvest::ResultsWorker.new(search_id).start()
   end
 
   def start
+
+    Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+      Rails.logger.info "Made it to start!"
+    end
       #loop through all queries for this search, then for each tweet check if account seen before? if no, then add!
       accounts = []
 
