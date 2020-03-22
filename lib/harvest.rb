@@ -307,7 +307,7 @@ module Harvest
     @percent_finished = ((@current_done.to_f.round(2) / @queries_count.to_f.round(2)) * 100).round(1).to_i.to_s
 
 
-
+    puts "Percent Finished: #{@percent_finished}"
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Updating progress: #{@percent_finished}% - current_done: #{@current_done} total_queries: #{@queries_count}"
     end
