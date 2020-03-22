@@ -205,6 +205,7 @@ module Harvest
     @percent_finished = 0
 
     def initialize(search_id)
+      puts "Initialized! search_id: #{search_id}"
       @search_id = search_id
       @search = Search.find(search_id)
       if !Setting.first.nil?
@@ -225,6 +226,7 @@ module Harvest
 
 
   def self.perform(search_id)
+    puts "Trying to start async search..."
     Harvest::ResultsWorker.new(search_id).start
   end
 
