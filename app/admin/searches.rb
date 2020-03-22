@@ -99,6 +99,7 @@ ActiveAdmin.register Search do
     end
    column "Status", :status
    column "Results" do |res|
+     #render html: "<div id='messages'>#{res.results}</div>".html_safe
      render html: "<div id='messages'>#{res.results}</div>".html_safe
    end
    column "Progress" do |prog|

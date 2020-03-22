@@ -22,7 +22,7 @@ gem 'bootstrap', '~> 4.0.0.alpha6'
 
 gem 'timber', '~> 3.0'
 gem 'timber-rails', '~> 1.0' # optional
-
+gem 'remote_syslog_logger'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
