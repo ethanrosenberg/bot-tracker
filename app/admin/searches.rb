@@ -115,11 +115,11 @@ ActiveAdmin.register Search do
    end
 
    column "Stop Search" do |job|
-      if job.status == 'finished' || job.status == 'stopped'
-        'Done'
-      else
+      #if job.status == 'finished' || job.status == 'stopped'
+        #'Done'
+      #else
         link_to "Stop", "/admin/searches/#{job.id}/stop/"
-      end
+      #end
     end
     column "Date Created", :created_at
 

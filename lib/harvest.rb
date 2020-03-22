@@ -81,6 +81,8 @@ module Harvest
                   end
                 end
 
+                update_progress()
+
 
                 #esults_count += 1
               end
@@ -137,8 +139,8 @@ module Harvest
     end
 
     def update_progress
-      percent_finished_string = get_percentage_done()
-      ActionCable.server.broadcast 'web_notifications_channel', message: percent_finished_string, id: @query.search.id, results: @query.search.results, status: @query.search.status
+      #percent_finished_string = get_percentage_done()
+      ActionCable.server.broadcast 'web_notifications_channel', id: @query.search.id, results: @query.search.results, status: @query.search.status
     end
 
     def get_percentage_done
@@ -381,6 +383,7 @@ module Harvest
     puts "Percent Finished: #{@percent_finished}"
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Updating progress: #{@percent_finished}% - current_done: #{@current_done} total_queries: #{@queries_count}"
+      Rails.logger.info "Search Status: #{@search.status}"
     end
 
   end
