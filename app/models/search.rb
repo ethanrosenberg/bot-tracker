@@ -24,7 +24,9 @@ class Search < ApplicationRecord
 
     Resque.enqueue(Harvest::ResultsWorker, self.id)
 
+    #byebug
 
+    #Harvest::ResultsWorker.perform(self.id)
 
   end
 

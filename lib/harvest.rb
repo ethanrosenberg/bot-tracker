@@ -14,6 +14,8 @@ module Harvest
 
     def initialize(query_id, keyword)
 
+      #byebug
+
       @query_id = query_id
       @query_keyword = keyword
       @query = Query.find(query_id)
@@ -44,6 +46,8 @@ module Harvest
 
     def start
 
+
+
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
       end
@@ -58,8 +62,11 @@ module Harvest
               Rails.logger.info "search status: #{@query.search.status}"
             end
 
+
+
               #check if tweet already exists in Tweet database. Update results if added
               unless tweet_already_exists(tweet.id)
+                #byebug
                 create_tweet(tweet)
                 @query.search.results = (@query.search.results || 0) + 1
 
@@ -100,6 +107,7 @@ module Harvest
     def create_tweet(tweet)
 
 
+
       @query.tweets.create do |t|
           t.tweet_id = tweet.id
           t.text = tweet.text
@@ -109,9 +117,12 @@ module Harvest
           t.profile_handle = tweet.user.screen_name
           t.profile_image_url = tweet.user.profile_image_url_https.to_s
           t.followers = tweet.user.followers_count
-          t.search_id = @query.search.id
-          t.query_id = @query_id
+          t.tweet_count = tweet.user.statuses_count
+          #t.search_id = @query.search.id
+          #t.query_id = @query_id
       end
+
+
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Created Tweet : #{tweet.id}"
@@ -121,7 +132,8 @@ module Harvest
     end
 
     def tweet_already_exists(id)
-      Tweet.where(:tweet_id => id).blank? ? false : true
+
+      @query.tweets.where(:tweet_id => id).blank? ? false : true
     end
 
     def update_progress
@@ -174,14 +186,7 @@ module Harvest
 
     end
 
-    def check_for_default_picture(url)
-     if url.include? "https://abs.twimg.com/sticky/default_profile_images/default_profile"
-       return true
-     else
-       return false
-     end
 
-    end
 
     def create_account(tweet)
       #byebug
@@ -214,14 +219,16 @@ module Harvest
 
     @queue = :results
 
-    @current_done = 0
-    @queries_count = 0
-    @percent_finished = 0
+
 
     def initialize(search_id)
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Initialized! search_id: #{search_id}"
       end
+
+      @current_done = 0
+      @queries_count = 0
+      @percent_finished = 0
 
       @search_id = search_id
       @search = Search.find(search_id)
@@ -252,7 +259,7 @@ module Harvest
       Rails.logger.info "Trying to start async search..."
     end
 
-    Harvest::ResultsWorker.new(search_id).start()
+    Harvest::ResultsWorker.new(search_id).start
   end
 
   def start
@@ -265,10 +272,12 @@ module Harvest
 
       @search.queries.each do |query|
         puts "Query: #{query.keyword}"
+
         query.tweets.each do |tweet|
 
           if !account_exists?(tweet.user_id)
             accounts << tweet
+
             @queries_count += 1
           end
         end
@@ -279,6 +288,8 @@ module Harvest
 
 
       end
+
+      #byebug
 
       accounts.each do |new_account|
         create_account(new_account)
@@ -310,6 +321,7 @@ module Harvest
             ac.handle = tweet.profile_handle
             ac.profile_image_url = tweet.profile_image_url
             ac.followers = tweet.followers
+
             ac.tweet_count = tweet.tweet_count
             default_url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
             ac.default_profile_pic = check_for_default_picture(tweet.profile_image_url)
@@ -331,12 +343,14 @@ module Harvest
     returned_count = 0;
     retweet_count = 0
     puts "Getting user id: #{user_id} tweets..."
-    @client.user_timeline(user_id, count: @tweets_per_timeline).each do |tweet|
+    @client.user_timeline(user_id, count: @tweets_per_timeline).each do |user_tweet|
 
-      if !tweet.retweeted_status.blank?
+
+      if !user_tweet.retweeted_status.blank?
         retweet_count += 1
       end
       returned_count += 1
+
     end
 
     percentage = ((retweet_count.to_f.round(2) / returned_count.to_f.round(2)) * 100).round(1).to_i.to_s
@@ -347,6 +361,15 @@ module Harvest
 
     { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count }
 
+
+  end
+
+  def check_for_default_picture(url)
+   if url.include? "https://abs.twimg.com/sticky/default_profile_images/default_profile"
+     return true
+   else
+     return false
+   end
 
   end
 

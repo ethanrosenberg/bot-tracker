@@ -16,7 +16,9 @@ class Query < ApplicationRecord
      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
        Rails.logger.info "Adding Twitter Query to Queue... id: #{self.id} keyword: #{self.keyword}"
      end
+     #
      Resque.enqueue(Harvest::TwitterWorker, self.id, self.keyword)
+     #Harvest::TwitterWorker.perform(self.id, self.keyword)
 
    end
 
