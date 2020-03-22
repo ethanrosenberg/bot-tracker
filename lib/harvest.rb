@@ -96,7 +96,8 @@ module Harvest
 
     def create_tweet(tweet)
 
-      Tweet.create do |t|
+
+      @query.search.tweets.create do |t|
           t.tweet_id = tweet.id
           t.text = tweet.text
           t.created_at = tweet.created_at
@@ -245,7 +246,6 @@ module Harvest
   def start
       #loop through all queries for this search, then for each tweet check if account seen before? if no, then add!
       accounts = []
-      puts "STARTING PROFILE QUERIES..."
 
       queries = @search.queries.each do |query|
         puts "Query: #{query.keyword}"
