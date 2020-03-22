@@ -255,7 +255,7 @@ module Harvest
       #loop through all queries for this search, then for each tweet check if account seen before? if no, then add!
       accounts = []
 
-      queries = @search.queries.each do |query|
+      @search.queries.each do |query|
         puts "Query: #{query.keyword}"
         query.tweets.each do |tweet|
 
