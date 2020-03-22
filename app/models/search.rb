@@ -45,7 +45,13 @@ class Search < ApplicationRecord
     end
 
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-      Rails.logger.info "All jobs stopped. Finished"
+      Rails.logger.info "All query jobs stopped. Finished"
+    end
+
+    Resque::Job.destroy(Harvest::ResultsWorker, self.id)
+
+    Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+      Rails.logger.info "ResultsWorker Stopped (search_id: #{self.id}). Finished"
     end
     #byebug
     #self.queries.each do |query|
