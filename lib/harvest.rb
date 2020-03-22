@@ -65,10 +65,16 @@ module Harvest
               unless tweet_already_exists(tweet.id)
                 create_tweet(tweet)
                 @query.search.results = (@query.search.results || 0) + 1
-                @query.search.save
 
-                Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-                  Rails.logger.info "Search -> Query -> Results= : #{@query.search.results}"
+                if @query.search.save
+                  Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+                    Rails.logger.info "Search -> Query -> Tweet = Saved Successfully!"
+                  end
+
+                else
+                  Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+                    Rails.logger.info "Search -> Query -> Tweet = Not Saved!"
+                  end
                 end
 
 
@@ -108,7 +114,10 @@ module Harvest
           t.followers = tweet.user.followers_count
       end
 
-      puts "Created Tweet : #{tweet.id}"
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Created Tweet : #{tweet.id}"
+      end
+
 
     end
 
