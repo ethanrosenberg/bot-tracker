@@ -243,7 +243,9 @@ module Harvest
       accounts.each do |new_account|
         create_account(new_account)
 
+        @current_done += 1
         update_progress()
+
 
         puts "Sleeping before next timeline harvest..."
         sleep @sleep
