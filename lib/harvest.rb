@@ -312,11 +312,16 @@ module Harvest
 
       end
 
-      @search.status == 'finished'
-      @search.save
+      #@search.status == 'finished'
+      #@search.save
+      @search.mark_finished
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "search status: #{@search.status}"
+      end
+
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "search status: #{Search.find(@search_id).status}"
       end
 
   end
@@ -401,7 +406,7 @@ module Harvest
 
   def update_progress
     percent_finished_string = get_percentage_done()
-    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @percent_finished
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @percent_finished, status: @search.status
   end
 
 
