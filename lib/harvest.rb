@@ -320,9 +320,7 @@ module Harvest
         Rails.logger.info "search status: #{@search.status}"
       end
 
-      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-        Rails.logger.info "search status: #{Search.find(@search_id).status}"
-      end
+      update_progress()
 
   end
 
