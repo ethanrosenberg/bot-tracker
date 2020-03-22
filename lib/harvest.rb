@@ -387,7 +387,7 @@ module Harvest
 
   def update_progress
     percent_finished_string = get_percentage_done()
-    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @message
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @percent_finished
   end
 
 
