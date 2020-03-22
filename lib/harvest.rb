@@ -110,6 +110,7 @@ module Harvest
           t.profile_image_url = tweet.user.profile_image_url_https.to_s
           t.followers = tweet.user.followers_count
           t.search_id = @query.search.id
+          t.query_id = @query_id
       end
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
