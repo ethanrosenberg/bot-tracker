@@ -51,18 +51,12 @@ module Harvest
 
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
 
-
-          #run a new query for keyword
           @client.search(@query_keyword).take(@tweets_per_keyword).each do |tweet|
 
             Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
               Rails.logger.info "scraping keyword: #{@query_keyword}"
               Rails.logger.info "search status: #{@query.search.status}"
             end
-            
-            #check tweet user id and see if this is a new twitter account. If yes then add to Accounts.
-            #create_account(tweet)
-
 
               #check if tweet already exists in Tweet database. Update results if added
               unless tweet_already_exists(tweet.id)
@@ -106,7 +100,7 @@ module Harvest
     def create_tweet(tweet)
 
 
-      @query.search.tweets.create do |t|
+      @query.tweets.create do |t|
           t.tweet_id = tweet.id
           t.text = tweet.text
           t.created_at = tweet.created_at
@@ -294,7 +288,6 @@ module Harvest
         Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
           Rails.logger.info "total accoounts: #{@current_done}"
         end
-
 
         puts "Sleeping before next timeline harvest..."
         sleep @sleep
