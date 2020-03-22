@@ -50,16 +50,19 @@ module Harvest
       #puts "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
 
       unless @query.search.status == 'finished' || @query.search.status == 'stopped'
-        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-          Rails.logger.info "scraping keyword: #{@query_keyword}"
-          Rails.logger.info "search status: #{@query.search.status}"
-        end
+
 
           #run a new query for keyword
           @client.search(@query_keyword).take(@tweets_per_keyword).each do |tweet|
 
+            Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+              Rails.logger.info "scraping keyword: #{@query_keyword}"
+              Rails.logger.info "search status: #{@query.search.status}"
+            end
+            
             #check tweet user id and see if this is a new twitter account. If yes then add to Accounts.
             #create_account(tweet)
+
 
               #check if tweet already exists in Tweet database. Update results if added
               unless tweet_already_exists(tweet.id)
@@ -112,6 +115,7 @@ module Harvest
           t.profile_handle = tweet.user.screen_name
           t.profile_image_url = tweet.user.profile_image_url_https.to_s
           t.followers = tweet.user.followers_count
+          t.search_id = @query.search.id
       end
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
