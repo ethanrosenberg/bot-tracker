@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_21_214825) do
+ActiveRecord::Schema.define(version: 2020_03_22_064657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,7 +66,9 @@ ActiveRecord::Schema.define(version: 2020_03_21_214825) do
     t.datetime "updated_at", null: false
     t.string "status"
     t.bigint "search_id"
+    t.bigint "tweet_id"
     t.index ["search_id"], name: "index_queries_on_search_id"
+    t.index ["tweet_id"], name: "index_queries_on_tweet_id"
   end
 
   create_table "reports", force: :cascade do |t|
@@ -106,8 +108,15 @@ ActiveRecord::Schema.define(version: 2020_03_21_214825) do
     t.string "profile_image_url"
     t.integer "followers"
     t.datetime "updated_at", null: false
+    t.bigint "query_id"
+    t.integer "tweet_count"
+    t.string "default_url"
+    t.boolean "default_profile_pic"
+    t.index ["query_id"], name: "index_tweets_on_query_id"
   end
 
   add_foreign_key "queries", "searches"
+  add_foreign_key "queries", "tweets"
   add_foreign_key "reports", "accounts"
+  add_foreign_key "tweets", "queries"
 end

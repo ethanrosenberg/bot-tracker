@@ -11,6 +11,7 @@ module Harvest
 
     @queue = :harvest
 
+
     def initialize(query_id, keyword)
 
       @query_id = query_id
@@ -39,6 +40,52 @@ module Harvest
 
     def self.perform(query_id, keyword)
       Harvest::TwitterWorker.new(query_id, keyword).start
+    end
+
+    def start
+
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+      end
+      puts "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+
+      unless @query.search.status == 'finished' || @query.search.status == 'stopped'
+        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+          Rails.logger.info "scraping keyword: #{@query_keyword}"
+          Rails.logger.info "search status: #{@query.search.status}"
+        end
+
+          #run a new query for keyword
+          @client.search(@query_keyword).take(@tweets_per_keyword).each do |tweet|
+
+            #check tweet user id and see if this is a new twitter account. If yes then add to Accounts.
+            #create_account(tweet)
+
+              #check if tweet already exists in Tweet database. Update results if added
+              unless tweet_already_exists(tweet.id)
+                create_tweet(tweet)
+                @query.search.results = (@query.search.results || 0) + 1
+                @query.search.save
+                #esults_count += 1
+              end
+
+          end
+          Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+            Rails.logger.info "zzzzz... #{@sleep} seconds."
+          end
+
+          sleep @sleep
+      end
+
+      @query.status = "done"
+      @query.save
+
+      #update_progress()
+
+      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+        Rails.logger.info "Finished harvest."
+      end
+
     end
 
     def create_tweet(tweet)
@@ -142,55 +189,139 @@ module Harvest
 
     end
 
-    def start
 
-      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-        Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+
+  end
+
+  class ResultsWorker
+
+    @queue = :results
+
+    @current_done = 0
+    @queries_count = 0
+    @percent_finished = 0
+
+    def initialize(search_id)
+      @search_id = search_id
+      @query_keyword = keyword
+      @search = Search.find(search_id)
+      if !Setting.first.nil?
+        @tweets_per_timeline = Setting.first.tweets_per_timeline
+        @sleep = Setting.first.sleep
+      else
+        @tweets_per_timeline = 200
+        @sleep = 7
       end
 
-      puts "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+      @client = Twitter::REST::Client.new do |config|
+        config.consumer_key        = ENV["CONSUMER_KEY"]
+        config.consumer_secret     = ENV["CONSUMER_SECRET"]
+        config.access_token        = ENV["ACCESS_TOKEN"]
+        config.access_token_secret = ENV["ACCESS_SECRET"]
+      end
+  end
 
-      #byebug
-      #results_count = 0
-      unless @query.search.status == 'finished' || @query.search.status == 'stopped'
-        Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-          Rails.logger.info "scraping keyword: #{@query_keyword}"
-          Rails.logger.info "search status: #{@query.search.status}"
+  def self.perform(search_id)
+    Harvest::ResultsWorker.new(search_id).start
+  end
+
+  def start
+      #loop through all queries for this search, then for each tweet check if account seen before? if no, then add!
+      accounts = []
+
+      queries = @search.queries.each do |query|
+        query.tweets.each do |tweet|
+
+          if !account_exists?(tweet.user_id)
+            accounts << tweet
+            @queries_count += 1
+          end
         end
 
-          @client.search(@query_keyword).take(@tweets_per_keyword).each do |tweet|
-
-            create_account(tweet)
-
-              unless tweet_already_exists(tweet.id)
-                create_tweet(tweet)
-                @query.search.results = (@query.search.results || 0) + 1
-                @query.search.save
-                #esults_count += 1
-              end
-
-          end
-          Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-            Rails.logger.info "zzzzz... #{@sleep} seconds."
-          end
-
-
-          sleep @sleep
-
       end
 
-      @query.status = "done"
-      @query.save
+      accounts.each do |new_account|
+        create_account(new_account)
 
-      update_progress()
-
-      #update_progress()
-
-      Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-        Rails.logger.info "Finished harvest."
+        update_progress()
       end
-      #@word.finish
+
+  end
+
+  def account_exists?(account_id)
+    Account.where(:user_id => account_id).blank? ? false : true
+  end
+
+  def create_account(tweet)
+
+      if Account.where(:user_id => tweet.user_id).blank?
+        Account.create do |ac|
+            ac.user_id = tweet.user_id
+            ac.creation_date = tweet.profile_created_at
+            ac.handle = tweet.profile_handle
+            ac.profile_image_url = tweet.profile_image_url
+            ac.followers = tweet.followers
+            ac.tweet_count = tweet.tweet_count
+            default_url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+            ac.default_profile_pic = check_for_default_picture(tweet.profile_image_url)
+            #byebug
+            percentage_data = get_user_tweets_percentage(tweet.user_id)
+            #{ retweet_percentage: percentage, collected: returned_count, retweet_count: retweet_count }
+            ac.rt_percentage = "RT Stats: #{percentage_data[:retweet_percentage]}% (retweets: #{percentage_data[:retweets]}, collected: #{percentage_data[:collected]})"
+
+        end
+      end
+
+  end
+
+  def get_user_tweets_percentage(user_id)
+
+
+    puts "Getting timeline with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
+
+    returned_count = 0;
+    retweet_count = 0
+    puts "Getting user id: #{user_id} tweets..."
+    @client.user_timeline(user_id, count: @tweets_per_timeline).each do |tweet|
+
+      if !tweet.retweeted_status.blank?
+        retweet_count += 1
+      end
+      returned_count += 1
     end
+
+    percentage = ((retweet_count.to_f.round(2) / returned_count.to_f.round(2)) * 100).round(1).to_i.to_s
+
+
+
+    puts "Sleeping before next timeline harvest..."
+    sleep @sleep
+
+    { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count }
+
+
+  end
+
+  def get_percentage_done
+
+    @percent_finished = ((@current_done.to_f.round(2) / @queries_count.to_f.round(2)) * 100).round(1).to_i.to_s
+
+
+
+    Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
+      Rails.logger.info "Updating progress: #{@percent_finished}% - current_done: #{@current_done} total_queries: #{@queries_count}"
+    end
+
+  end
+
+  def update_progress
+    percent_finished_string = get_percentage_done()
+    ActionCable.server.broadcast 'web_notifications_channel', message: @percent_finished
+  end
+
+
+
+
 
   end
 

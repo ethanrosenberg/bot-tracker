@@ -23,6 +23,8 @@ class Search < ApplicationRecord
       self.queries.create(keyword: keyword.term, status: "working")
     end
 
+    Resque.enqueue(Harvest::ResultsWorker, self.id)
+
 
 
   end
