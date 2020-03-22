@@ -66,6 +66,7 @@ module Harvest
                 create_tweet(tweet)
                 @query.search.results = (@query.search.results || 0) + 1
                 @query.search.save
+                puts "Search -> Query -> Results= : #{@query.search.results}"
                 #esults_count += 1
               end
 
@@ -100,6 +101,8 @@ module Harvest
           t.profile_image_url = tweet.user.profile_image_url_https.to_s
           t.followers = tweet.user.followers_count
       end
+
+      puts "Created Tweet : #{tweet.id}"
 
     end
 
