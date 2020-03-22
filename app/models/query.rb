@@ -3,7 +3,7 @@
 
 class Query < ApplicationRecord
    after_create :start_job
-   after_save :check_for_finish
+   #after_save :check_for_finish
 
    belongs_to :search
    has_many :tweets

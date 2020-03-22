@@ -30,6 +30,8 @@ class Search < ApplicationRecord
 
   end
 
+  
+
 
 
   def self.stop_jobs(id)

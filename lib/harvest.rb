@@ -140,7 +140,7 @@ module Harvest
 
     def update_progress
       #percent_finished_string = get_percentage_done()
-      ActionCable.server.broadcast 'web_notifications_channel', id: @query.search.id, results: @query.search.results, status: @query.search.status
+      ActionCable.server.broadcast 'web_notifications_channel', id: @query.search.id, results: @query.search.results, status: @query.search.status, message: 0
     end
 
     def get_percentage_done
@@ -294,6 +294,7 @@ module Harvest
       #byebug
 
       accounts.each do |new_account|
+        byebug
         create_account(new_account)
 
         @current_done += 1
@@ -307,6 +308,9 @@ module Harvest
         sleep @sleep
 
       end
+
+      @search.status == 'finished'
+      @search.save
 
   end
 
