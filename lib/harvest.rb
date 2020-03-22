@@ -189,9 +189,9 @@ module Harvest
 
     end
 
-
-
   end
+
+
 
   class ResultsWorker
 
@@ -228,8 +228,10 @@ module Harvest
   def start
       #loop through all queries for this search, then for each tweet check if account seen before? if no, then add!
       accounts = []
+      puts "STARTING PROFILE QUERIES..."
 
       queries = @search.queries.each do |query|
+        puts "Query: #{query.keyword}"
         query.tweets.each do |tweet|
 
           if !account_exists?(tweet.user_id)
@@ -237,7 +239,7 @@ module Harvest
             @queries_count += 1
           end
         end
-
+        puts "#{query.keyword} Query Count : - #{@queries_count}"
       end
 
       accounts.each do |new_account|
@@ -245,6 +247,7 @@ module Harvest
 
         @current_done += 1
         update_progress()
+        puts "total accoounts: #{@current_done}"
 
 
         puts "Sleeping before next timeline harvest..."
@@ -321,7 +324,7 @@ module Harvest
 
   def update_progress
     percent_finished_string = get_percentage_done()
-    ActionCable.server.broadcast 'web_notifications_channel', id: search_id, message: 33
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @message
   end
 
 

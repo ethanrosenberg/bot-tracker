@@ -19,7 +19,6 @@ class Search < ApplicationRecord
 
     #STDERR.puts "starting twitter scraper..."
     Keyword.all.each do |keyword|
-
       self.queries.create(keyword: keyword.term, status: "working")
     end
 
