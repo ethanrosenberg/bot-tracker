@@ -203,7 +203,6 @@ module Harvest
 
     def initialize(search_id)
       @search_id = search_id
-      @query_keyword = keyword
       @search = Search.find(search_id)
       if !Setting.first.nil?
         @tweets_per_timeline = Setting.first.tweets_per_timeline
@@ -219,7 +218,8 @@ module Harvest
         config.access_token        = ENV["ACCESS_TOKEN"]
         config.access_token_secret = ENV["ACCESS_SECRET"]
       end
-  end
+    end
+
 
   def self.perform(search_id)
     Harvest::ResultsWorker.new(search_id).start
