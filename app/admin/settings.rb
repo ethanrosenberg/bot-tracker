@@ -27,6 +27,10 @@ ActiveAdmin.register Setting do
         #link_to I18n.t('active_admin.new'), new_resource_path(resource)
      link_to 'Admin Users', '/admin/admin_users'
 
+
+  end
+  action_item :view_site do
+     link_to 'Workers', '/resque_web'
   end
 
   controller do
