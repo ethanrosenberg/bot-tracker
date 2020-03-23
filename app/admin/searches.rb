@@ -25,7 +25,7 @@ ActiveAdmin.register Search do
   config.remove_action_item(:new)
 
   action_item only: :new do |gift|
-    button_to "Run Crawler", "/admin/searches/crawl", :method => :post, :confirm => "Are you sure?"
+    button_to "Run Crawler", "/admin/searches/crawl", :method => :post, :data => {:confirm => 'Are you sure you want to start the crawler now?'}
   end
 
   #sidebar :actions do
