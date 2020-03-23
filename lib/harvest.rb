@@ -39,8 +39,6 @@ module Harvest
 
     def start
 
-      update_progress()
-
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
       end
@@ -129,7 +127,7 @@ module Harvest
 
     def update_progress
       #percent_finished_string = get_percentage_done()
-      ActionCable.server.broadcast 'web_notifications_channel', id: @query.search.id, results: @query.search.results, status: @query.search.status, message: "Scraping tweets", width: 100, color: "#0a57aa;"
+      ActionCable.server.broadcast 'web_notifications_channel', id: @query.search.id, results: @query.search.results, status: @query.search.status, message: 0
     end
 
     def get_percentage_done
@@ -255,8 +253,6 @@ module Harvest
 
   def start
 
-    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: "#{@search.percent_finished}%", status: "working", results: @search.results, width: 0, color: "#4CAF50;"
-
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Made it to start!"
     end
@@ -321,7 +317,7 @@ module Harvest
         Rails.logger.info "search status: #{Search.find(@search_id).status}"
       end
 
-      update_progress(Search.find(@search_id).status)
+      update_progress(status)
 
   end
 
@@ -398,7 +394,7 @@ module Harvest
     puts "Percent Finished: #{@percent_finished}"
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Updating progress: #{@percent_finished}% - current_done: #{@current_done} total_queries: #{@queries_count}"
-      #Rails.logger.info "Search Status: #{@search.status}"
+      Rails.logger.info "Search Status: #{@search.status}"
     end
 
   end
@@ -407,7 +403,7 @@ module Harvest
     get_percentage_done()
     @search.update_progress(@percent_finished)
 
-    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: "#{@search.percent_finished}%", status: status, results: @search.results, width: @search.percent_finished, color: "#4CAF50;"
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @search.percent_finished, status: status, results: @search.results
   end
 
 

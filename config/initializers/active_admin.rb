@@ -8,7 +8,6 @@ ActiveAdmin.setup do |config|
 
   config.register_javascript 'cable.js'
   config.register_javascript 'width'
-  config.register_javascript 'color'
   config.register_javascript 'progress.js'
   config.register_javascript 'text'
   config.register_javascript 'results'
