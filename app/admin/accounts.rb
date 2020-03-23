@@ -19,7 +19,7 @@ ActiveAdmin.register Account do
   index do
     column "id", :id
     column "Profile Image" do |prof|
-      link_to image_tag(prof.profile_image_url, size: "50x50"), "https://twitter.com/#{prof.handle}", target: :_blank
+      link_to image_tag(prof.profile_image_url, size: "70x70"), "https://twitter.com/#{prof.handle}", target: :_blank
     end
 
     column "Handle", :handle
