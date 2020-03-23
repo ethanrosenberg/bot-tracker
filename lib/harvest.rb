@@ -2,7 +2,6 @@
 
 module Harvest
 
-
   class TwitterWorker
 
     #TWEETS_PER_TIMELINE = Setting.first.tweets_per_timeline if Setting.first.nil?
@@ -11,10 +10,7 @@ module Harvest
 
     @queue = :harvest
 
-
     def initialize(query_id, keyword)
-
-      #byebug
 
       @query_id = query_id
       @query_keyword = keyword
@@ -29,15 +25,12 @@ module Harvest
         @sleep = 7
       end
 
-
-
       @client = Twitter::REST::Client.new do |config|
         config.consumer_key        = ENV["CONSUMER_KEY"]
         config.consumer_secret     = ENV["CONSUMER_SECRET"]
         config.access_token        = ENV["ACCESS_TOKEN"]
         config.access_token_secret = ENV["ACCESS_SECRET"]
       end
-
     end
 
     def self.perform(query_id, keyword)
@@ -45,8 +38,6 @@ module Harvest
     end
 
     def start
-
-
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Starting Query with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
@@ -61,8 +52,6 @@ module Harvest
               Rails.logger.info "scraping keyword: #{@query_keyword}"
               Rails.logger.info "search status: #{@query.search.status}"
             end
-
-
 
               #check if tweet already exists in Tweet database. Update results if added
               unless tweet_already_exists(tweet.id)
@@ -83,8 +72,6 @@ module Harvest
 
                 update_progress()
 
-
-                #esults_count += 1
               end
 
           end
@@ -314,6 +301,8 @@ module Harvest
 
           sleep @sleep
         end
+
+
 
       end
 
