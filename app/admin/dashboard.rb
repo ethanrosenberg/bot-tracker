@@ -4,14 +4,19 @@ ActiveAdmin.register_page "Dashboard" do
   content title: proc { I18n.t("active_admin.dashboard") } do
     div class: "blank_slate_container", id: "dashboard_default_message" do
       span class: "blank_slate" do
-        span Tweet.all.count
-        #small I18n.t("active_admin.dashboard_welcome.call_to_action")
+        span id: "tweets_count" do
+          Tweet.all.count
+        end
         small "tweets harvested"
+        #small I18n.t("active_admin.dashboard_welcome.call_to_action")
       end
+
 
       span class: "blank_slate" do
         #span I18n.t("active_admin.dashboard_welcome.welcome")
-        span Account.all.count
+        span id: "accounts_count" do
+          Account.all.count
+        end
         small "accounts harvested"#I18n.t("active_admin.dashboard_welcome.call_to_action")
       end
     end

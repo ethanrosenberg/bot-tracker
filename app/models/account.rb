@@ -1,9 +1,13 @@
 class Account < ApplicationRecord
   after_create :run_report
-
+  after_save :update_dashboard_accounts
   has_one :report
 
 
+
+  def update_dashboard_accounts
+    ActionCable.server.broadcast 'web_notifications_channel', total_accounts: Account.all.count
+  end
 
   def run_report
     #byebug
