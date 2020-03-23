@@ -220,6 +220,7 @@ module Harvest
       @percent_finished = 0
 
       @search_id = search_id
+      @status = Search.find(search_id).status
       @search = Search.find(search_id)
       if !Setting.first.nil?
         @tweets_per_timeline = Setting.first.tweets_per_timeline
@@ -281,7 +282,7 @@ module Harvest
       #byebug
 
       accounts.each do |new_account|
-        @status = Search.find(@search_id).status
+
 
         unless @status == 'finished' || @status == 'stopped'
           create_account(new_account)
@@ -309,7 +310,9 @@ module Harvest
 
       #@search.status == 'finished'
       #@search.save
-      @search.mark_finished
+      unless @status == 'stopped'
+        @search.mark_finished
+      end
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "search status: #{Search.find(@search_id).status}"
