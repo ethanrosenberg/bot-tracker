@@ -36,7 +36,7 @@ class Search < ApplicationRecord
 
   def self.stop_jobs(id)
 
-    mark_stopped()
+    self.mark_stopped()
 
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Stopping jobs..."
