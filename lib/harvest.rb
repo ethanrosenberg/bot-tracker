@@ -282,7 +282,7 @@ module Harvest
 
       accounts.each do |new_account|
 
-        status = Search.find(search_id).status
+        status = Search.find(@search_id).status
         unless status == 'finished' || status == 'stopped'
           create_account(new_account)
 
