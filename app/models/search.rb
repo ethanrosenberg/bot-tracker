@@ -6,10 +6,10 @@ class Search < ApplicationRecord
 
   has_many :queries
 
-  def update_progress
+  #def update_progress
 
-    ActionCable.server.broadcast 'web_notifications_channel', message: self.percent_finished, id: self.id
-  end
+    #ActionCable.server.broadcast 'web_notifications_channel', message: self.percent_finished, id: self.id
+  #end
 
   def start_jobs
 
@@ -36,6 +36,7 @@ class Search < ApplicationRecord
 
   def self.stop_jobs(id)
 
+    mark_stopped()
 
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Stopping jobs..."
@@ -99,6 +100,11 @@ class Search < ApplicationRecord
 
   def updated_at
     self[:updated_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
+  end
+
+  def mark_stopped
+    self.status = 'stopped'
+    save
   end
 
   def mark_finished

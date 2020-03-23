@@ -9,11 +9,11 @@ ActiveAdmin.register Search do
     #byebug
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Stopping Search ID: #{params[:id]}"
-      Rails.logger.info "Params Dump: #{params}"
+      #Rails.logger.info "Params Dump: #{params}"
     end
 
     Search.stop_jobs(params[:id])
-    
+
     redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
   end
 
