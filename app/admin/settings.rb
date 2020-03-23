@@ -1,6 +1,9 @@
 ActiveAdmin.register Setting do
   #menu priority: 3
-#menu label: "My Posts"
+    #menu label: "My Posts"
+    index :title => "Harvester Settings" do
+
+  end
 
 
   # See permitted parameters documentation:
