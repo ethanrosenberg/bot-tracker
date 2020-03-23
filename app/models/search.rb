@@ -38,7 +38,8 @@ class Search < ApplicationRecord
 
     #byebug
 
-    s = Search.find(id).status = 'stopped'
+    s = Search.find(id)
+    s.status = 'stopped'
     s.save
 
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
