@@ -255,6 +255,8 @@ module Harvest
 
   def start
 
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: "#{@search.percent_finished}%", status: status, results: @search.results, width: 0, color: "#4CAF50;"
+
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Made it to start!"
     end
