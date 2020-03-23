@@ -309,7 +309,7 @@ module Harvest
 
       #@search.status == 'finished'
       #@search.save
-      unless status == 'stopped'
+      unless Search.find(@search_id).status == 'stopped'
         @search.mark_finished
       end
 
