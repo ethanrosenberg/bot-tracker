@@ -11,8 +11,21 @@
 
 @import "active_admin/mixins";
 @import "active_admin/base";
+
+$skinLogo: url("./logo_blue.png") no-repeat 23px 0;
+
+
 @import "active_skin";
 
+#header ul.tabs > li {
+    font-size: 14px;
+    margin: 0;
+}
+
+body {
+    font-size: 90%;
+    color: #232526;
+}
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
