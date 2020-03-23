@@ -17,12 +17,44 @@ ActiveAdmin.register Search do
     redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
   end
 
-  form do |f|
-    f.inputs "Search" do
-      f.input :keyword,  :as    => :string, :label => "Keyword", :hint => 'Enter keyword'
-    end
-    f.actions
+  #member_action :send_push_notification_path do
+    #code here
+  #  puts "apples!"
+    #redirect_to :action => :test
+  #end
+  config.remove_action_item(:new)
+
+  action_item only: :new do |gift|
+    button_to "Run Crawler", "/admin/searches/crawl", :method => :post, :confirm => "Are you sure?"
   end
+
+  #sidebar :actions do
+    #button_to "Run Crawler", "/admin/searches/crawl", :method => :post, :confirm => "Are you sure?"
+  #end
+
+  collection_action :crawl, :method => :post do
+    system "rake scheduler:twitter"
+    redirect_to '/admin/searches', :notice => "Crawler was started."
+  end
+
+
+
+  #form do |f|
+    #f.inputs "Search" do
+      #f.input :keyword,  :as    => :string, :label => "Keyword", :hint => 'Enter keyword'
+    #end
+    #f.actions
+  #end
+
+
+  #config.remove_action_item(:create)
+  #action_item only: :create do
+
+    #link_to 'Start Twitter Crawler', create_search_path, method: :get
+  #end
+
+
+
 
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -42,7 +74,7 @@ ActiveAdmin.register Search do
   controller do
     def create
 
-      @search = Search.new(keyword: params[:search][:keyword], status: "started")
+      @search = Search.new(status: "working")
 
       respond_to do |format|
         if @search.save
@@ -53,6 +85,12 @@ ActiveAdmin.register Search do
         end
       end
     end
+
+    def test
+      byebug
+    end
+
+
 
 
 
