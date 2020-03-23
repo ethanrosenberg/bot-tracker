@@ -14,7 +14,7 @@ Rails.application.configure do
 
   #config.action_cable.allowed_request_origins = ['https://aqueous-shelf-54319.herokuapp.com', 'http://aqueous-shelf-54319.herokuapp.com']
   #config.action_cable.allowed_request_origins = ['http://fiddle.jshell.net']
-
+  config.assets.compile = true
 
   #ActionCable.server.config.disable_request_forgery_protection = true
 
