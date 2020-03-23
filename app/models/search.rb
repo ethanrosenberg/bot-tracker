@@ -36,7 +36,10 @@ class Search < ApplicationRecord
 
   def self.stop_jobs(id)
 
-    self.mark_stopped()
+    #byebug
+
+    s = Search.find(id).status = 'stopped'
+    s.save
 
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info "Stopping jobs..."
@@ -102,10 +105,6 @@ class Search < ApplicationRecord
     self[:updated_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
   end
 
-  def self.mark_stopped
-    self.status = 'stopped'
-    save
-  end
 
   def mark_finished
     self.status = 'finished'
