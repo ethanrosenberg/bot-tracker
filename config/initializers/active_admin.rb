@@ -181,7 +181,7 @@ ActiveAdmin.setup do |config|
 
   # == Setting a Favicon
   #
-  # config.favicon = 'favicon.ico'
+   config.favicon = 'bot_icon.ico'
 
   # == Meta Tags
   #
