@@ -6,6 +6,7 @@ ActiveAdmin.register Search do
     #byebug
     #Resque::Job.destroy(:scrape, Scrape)
     #byebug
+    #byebug
     Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
       Rails.logger.info puts "Stopping Search ID: #{params[:id]}"
       Rails.logger.info puts "Params Dump: #{params}"
@@ -102,11 +103,11 @@ ActiveAdmin.register Search do
         distance_of_time_in_words(job.created_at, job.updated_at)
       end
     end
-   column "Status", :status
-   #column "Accounts Harvested" do |res|
-     #render html: "<div id='messages'>#{res.results}</div>".html_safe
+   #column "Status", :status
+   column "Status" do |res|
+     render html: "<div id='status'>#{res.status}</div>".html_safe
     # render html: "<div id='accounts'>#{res.results}</div>".html_safe
-   #end
+   end
    column "Tweets Harvested" do |res|
      #render html: "<div id='messages'>#{res.results}</div>".html_safe
      render html: "<div id='messages'>#{res.results}</div>".html_safe
