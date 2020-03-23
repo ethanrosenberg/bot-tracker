@@ -220,7 +220,6 @@ module Harvest
       @percent_finished = 0
 
       @search_id = search_id
-      @status = Search.find(search_id).status
       @search = Search.find(search_id)
       if !Setting.first.nil?
         @tweets_per_timeline = Setting.first.tweets_per_timeline
@@ -283,18 +282,18 @@ module Harvest
 
       accounts.each do |new_account|
 
-
-        unless @status == 'finished' || @status == 'stopped'
+        status = Search.find(search_id).status
+        unless status == 'finished' || status == 'stopped'
           create_account(new_account)
 
           @current_done += 1
-          update_progress()
+          update_progress(status)
 
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
             Rails.logger.info "total accoounts: #{@current_done}"
           end
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-            Rails.logger.info "search status: #{@status}"
+            Rails.logger.info "search status: #{status}"
           end
 
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
@@ -310,7 +309,7 @@ module Harvest
 
       #@search.status == 'finished'
       #@search.save
-      unless @status == 'stopped'
+      unless status == 'stopped'
         @search.mark_finished
       end
 
@@ -318,7 +317,7 @@ module Harvest
         Rails.logger.info "search status: #{Search.find(@search_id).status}"
       end
 
-      update_progress()
+      update_progress(status)
 
   end
 
@@ -400,11 +399,11 @@ module Harvest
 
   end
 
-  def update_progress
+  def update_progress(status)
     get_percentage_done()
     @search.update_progress(@percent_finished)
 
-    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @search.percent_finished, status: @status, results: @search.results
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @search.percent_finished, status: status, results: @search.results
   end
 
 
