@@ -317,7 +317,7 @@ module Harvest
         Rails.logger.info "search status: #{Search.find(@search_id).status}"
       end
 
-      update_progress(status)
+      update_progress(Search.find(@search_id).status)
 
   end
 
