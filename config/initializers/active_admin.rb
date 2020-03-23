@@ -328,7 +328,7 @@ ActiveAdmin.setup do |config|
   # By default, the footer shows the current Active Admin version. You can
   # override the content of the footer here.
   #
-  # config.footer = 'my custom footer text'
+   config.footer = 'Copyright 2020 FindBots.io - All Rights Reserved'
 
   # == Sorting
   #
