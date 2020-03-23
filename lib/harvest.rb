@@ -281,8 +281,9 @@ module Harvest
       #byebug
 
       accounts.each do |new_account|
+        @status = Search.find(@search_id).status
 
-        unless @search.status == 'finished' || @search.status == 'stopped'
+        unless @status == 'finished' || @status == 'stopped'
           create_account(new_account)
 
           @current_done += 1
@@ -292,7 +293,7 @@ module Harvest
             Rails.logger.info "total accoounts: #{@current_done}"
           end
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-            Rails.logger.info "search status: #{@search.status}"
+            Rails.logger.info "search status: #{@status}"
           end
 
           Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
@@ -311,7 +312,7 @@ module Harvest
       @search.mark_finished
 
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
-        Rails.logger.info "search status: #{@search.status}"
+        Rails.logger.info "search status: #{Search.find(@search_id).status}"
       end
 
       update_progress()
@@ -400,7 +401,7 @@ module Harvest
     get_percentage_done()
     @search.update_progress(@percent_finished)
 
-    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @search.percent_finished, status: @search.status, results: @search.results
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @search.percent_finished, status: @status, results: @search.results
   end
 
 
