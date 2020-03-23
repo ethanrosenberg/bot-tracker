@@ -4,7 +4,7 @@ ActiveAdmin.setup do |config|
   # Set the title that is displayed on the main layout
   # for each of the active admin pages.
   #
-  config.site_title = "Bot Tracker"
+  config.site_title = "FindBots.io"
 
   config.register_javascript 'cable.js'
   config.register_javascript 'width'
