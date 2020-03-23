@@ -24,7 +24,7 @@ menu priority: 2
 
     column "Handle", :handle
     column "Followers", :followers
-
+    column "Retweet Percentage", :retweet_percentage_total
     column "User ID", :user_id
     column "Account Creation Date", :creation_date
     column "Created At", :created_at

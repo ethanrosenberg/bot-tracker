@@ -342,7 +342,7 @@ module Harvest
             percentage_data = get_user_tweets_percentage(tweet.user_id)
             #{ retweet_percentage: percentage, collected: returned_count, retweet_count: retweet_count }
             ac.rt_percentage = "RT Stats: #{percentage_data[:retweet_percentage]}% (retweets: #{percentage_data[:retweets]}, collected: #{percentage_data[:collected]})"
-
+            ac.retweet_percentage_total = percentage_data[:retweet_percentage]
         end
       end
 
