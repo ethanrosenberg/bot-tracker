@@ -1,9 +1,9 @@
 App.room = App.cable.subscriptions.create "WebNotificationsChannel",
   received: (data) ->
-    $('#search_' + data['id'] + '> td.col.col-progress #myBar').text "#{data['message']}"
+    $('#search_' + data['id'] + '> td.col.col-progress #myBar').attr("style", "--width: #{data['width']}%");
 
+    #$('#search_' + data['id'] + '> td.col.col-progress #myBar').attr("style", "--width: #{data['message']}%");
 
-    #$('#search_' + data['id'] + '> td.col.col-progress #myBar').text "#{data['message']}%"
 
     #$('#search_' + data['id'] + '> td.col.col-progress #myBar').text data['message']
     #$('#search_' + data['id'] +  '> td.col.col-cable').text data['message']
