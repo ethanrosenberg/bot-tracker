@@ -1,9 +1,9 @@
 ActiveAdmin.register Setting do
   #menu priority: 3
     #menu label: "My Posts"
-    index :title => "Harvester Settings" do
+    #index :title => "Harvester Settings" do
 
-  end
+  #end
 
 
   # See permitted parameters documentation:
@@ -27,7 +27,12 @@ ActiveAdmin.register Setting do
         #link_to I18n.t('active_admin.new'), new_resource_path(resource)
      link_to 'Admin Users', '/admin/admin_users'
 
- end
+  end
+
+  controller do
+
+    before_action { @page_title = "Harvester Settings" }
+  end
 
   #
   # or
