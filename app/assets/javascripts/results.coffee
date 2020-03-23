@@ -1,6 +1,6 @@
 App.room = App.cable.subscriptions.create "WebNotificationsChannel",
   received: (data) ->
-    $('#search_' + data['id'] +  '> td.col.col-results').text data['results']
+    $('#search_' + data['id'] +  '> td.col.col-tweets_harvested').text data['results']
 
     #messages
     #$('#search_' + data['id'] +  '> td.col.col-cable').text data['message']
