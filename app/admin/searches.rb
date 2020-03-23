@@ -6,6 +6,7 @@ ActiveAdmin.register Search do
     #byebug
     #Resque::Job.destroy(:scrape, Scrape)
     #byebug
+    puts "ID: #{params[:id]}"
     Search.stop_jobs(params[:id])
     redirect_to '/admin/searches', notice: 'Scraping job was stopped.'
   end
