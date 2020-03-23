@@ -1,6 +1,6 @@
 
 ActiveAdmin.register Search do
-
+menu priority: 5
 
   member_action :stop, method: :get do
     #byebug

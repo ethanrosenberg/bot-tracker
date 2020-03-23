@@ -1,4 +1,5 @@
 ActiveAdmin.register Setting do
+  #menu priority: 3
 #menu label: "My Posts"
 
 
@@ -18,6 +19,12 @@ ActiveAdmin.register Setting do
       link_to 'Add New Setting', new_admin_setting_path
     end
   end
+
+  action_item :view_site do
+        #link_to I18n.t('active_admin.new'), new_resource_path(resource)
+     link_to 'Admin Users', '/admin/admin_users'
+
+ end
 
   #
   # or

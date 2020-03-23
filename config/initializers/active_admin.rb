@@ -13,6 +13,7 @@ ActiveAdmin.setup do |config|
   config.register_javascript 'results'
   config.register_javascript 'status'
   config.register_javascript 'accounts'
+  config.register_javascript 'dashboard_results'
 
 
   # Set the link url for the title. For example, to take

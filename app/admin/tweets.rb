@@ -1,5 +1,5 @@
 ActiveAdmin.register Tweet do
-
+menu priority: 4
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -14,5 +14,5 @@ ActiveAdmin.register Tweet do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
-  
+
 end

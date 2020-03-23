@@ -17,7 +17,15 @@ $skinLogo: image-url('logo_purple.png') no-repeat 23px 0;
 
 @import "active_skin";
 
+.blank_slate span {
+    font-size: 90px;
+}
 
+.blank_slate small {
+    display: block;
+    font-size: 20px;
+    font-weight: normal;
+}
 
 #header ul.tabs > li {
     font-size: 14px;
