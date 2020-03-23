@@ -102,7 +102,7 @@ class Search < ApplicationRecord
     self[:updated_at].in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %l:%M %p")
   end
 
-  def mark_stopped
+  def self.mark_stopped
     self.status = 'stopped'
     save
   end
