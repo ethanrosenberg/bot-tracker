@@ -19,7 +19,17 @@ ActiveAdmin.register_page "Dashboard" do
         end
         small "accounts harvested"#I18n.t("active_admin.dashboard_welcome.call_to_action")
       end
+
+      span class: "blank_slate" do
+        #span I18n.t("active_admin.dashboard_welcome.welcome")
+        span id: "bots_count" do
+          Report.get_bots_found
+        end
+        small "potential bots identified"#I18n.t("active_admin.dashboard_welcome.call_to_action")
+      end
     end
+
+
 
       #columns do
       #  panel "Total No. of Contacts" do

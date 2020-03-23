@@ -15,6 +15,7 @@ ActiveAdmin.setup do |config|
   config.register_javascript 'accounts'
   config.register_javascript 'dashboard_tweets'
   config.register_javascript 'dashboard_accounts'
+  config.register_javascript 'dashboard_bots'
 
 
   # Set the link url for the title. For example, to take

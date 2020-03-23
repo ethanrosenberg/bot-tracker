@@ -403,7 +403,7 @@ module Harvest
     get_percentage_done()
     @search.update_progress(@percent_finished)
 
-    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @search.percent_finished, status: status, results: @search.results
+    ActionCable.server.broadcast 'web_notifications_channel', id: @search_id, message: @search.percent_finished, status: status, results: @search.results, bots_count: "#{Report.get_bots_found}"
   end
 
 
