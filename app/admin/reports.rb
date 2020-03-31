@@ -22,6 +22,7 @@ menu priority: 6
       link_to image_tag(prof.account.profile_image_url, size: "50x50"), "https://twitter.com/#{prof.account.handle}", target: :_blank
     end
     column "Average Tweets Per Day", :tweets_per_day
+    column "Languages Found", :languages_found
     column "Post Data" do |post_data|
       post_data.account.rt_percentage
     end

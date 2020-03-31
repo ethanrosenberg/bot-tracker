@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_31_060331) do
+ActiveRecord::Schema.define(version: 2020_03_31_061542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 2020_03_31_060331) do
     t.datetime "updated_at", null: false
     t.bigint "account_id"
     t.integer "retweet_percentage"
+    t.integer "languages_found"
     t.index ["account_id"], name: "index_reports_on_account_id"
   end
 

@@ -16,6 +16,7 @@ class Account < ApplicationRecord
       report.tweets_per_day = calculate_tweets_per_day()
       report.default_profile_pic = self.default_profile_pic
       report.retweet_percentage = self.retweet_percentage_total
+      report.languages_found = self.languages.count
       report.save
     end
     self.report = new_report
