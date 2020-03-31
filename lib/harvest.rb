@@ -338,12 +338,12 @@ module Harvest
             default_url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
             ac.default_profile_pic = check_for_default_picture(tweet.profile_image_url)
             #byebug
+
+
+            percentage_data = get_user_tweets_percentage_and_languages(tweet.user_id)
             percentage_data[:languages].each do |key, value|
               ac.languages << value
             end
-
-            byebug
-            percentage_data = get_user_tweets_percentage_and_languages(tweet.user_id)
             #{ retweet_percentage: percentage, collected: returned_count, retweet_count: retweet_count }
             ac.rt_percentage = "RT Stats: #{percentage_data[:retweet_percentage]}% (retweets: #{percentage_data[:retweets]}, collected: #{percentage_data[:collected]})"
             ac.retweet_percentage_total = percentage_data[:retweet_percentage]
