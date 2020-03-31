@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_31_054528) do
+ActiveRecord::Schema.define(version: 2020_03_31_060331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2020_03_31_054528) do
     t.boolean "default_profile_pic"
     t.string "rt_percentage"
     t.integer "retweet_percentage_total"
+    t.string "languages", default: [], array: true
   end
 
   create_table "active_admin_comments", force: :cascade do |t|

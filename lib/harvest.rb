@@ -107,6 +107,7 @@ module Harvest
           t.profile_image_url = tweet.user.profile_image_url_https.to_s
           t.followers = tweet.user.followers_count
           t.tweet_count = tweet.user.statuses_count
+          t.language = tweet.lang
           #t.search_id = @query.search.id
           #t.query_id = @query_id
       end
@@ -208,9 +209,7 @@ module Harvest
 
     @queue = :results
 
-
-
-    def initialize(search_id)
+  def initialize(search_id)
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Initialized! search_id: #{search_id}"
       end
@@ -239,7 +238,7 @@ module Harvest
       Timber.with_context(app: {name: "bot-tracker", env: Rails.env}) do
         Rails.logger.info "Initialized! Success!"
       end
-    end
+  end
 
 
   def self.perform(search_id)
@@ -339,7 +338,12 @@ module Harvest
             default_url = "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
             ac.default_profile_pic = check_for_default_picture(tweet.profile_image_url)
             #byebug
-            percentage_data = get_user_tweets_percentage(tweet.user_id)
+            percentage_data[:languages].each do |key, value|
+              ac.languages << value
+            end
+
+            byebug
+            percentage_data = get_user_tweets_percentage_and_languages(tweet.user_id)
             #{ retweet_percentage: percentage, collected: returned_count, retweet_count: retweet_count }
             ac.rt_percentage = "RT Stats: #{percentage_data[:retweet_percentage]}% (retweets: #{percentage_data[:retweets]}, collected: #{percentage_data[:collected]})"
             ac.retweet_percentage_total = percentage_data[:retweet_percentage]
@@ -348,13 +352,14 @@ module Harvest
 
   end
 
-  def get_user_tweets_percentage(user_id)
+  def get_user_tweets_percentage_and_languages(user_id)
 
 
     puts "Getting timeline with settings sleep(#{@sleep}), tweets_per_timeline(#{@tweets_per_timeline}), tweets_per_keyword(#{@tweets_per_keyword})"
 
     returned_count = 0;
     retweet_count = 0
+    languages_found = []
     puts "Getting user id: #{user_id} tweets..."
     @client.user_timeline(user_id, count: @tweets_per_timeline).each do |user_tweet|
 
@@ -364,6 +369,8 @@ module Harvest
       end
       returned_count += 1
 
+      languages_found << user_tweet.lang
+
     end
 
     percentage = ((retweet_count.to_f.round(2) / returned_count.to_f.round(2)) * 100).round(1).to_i.to_s
@@ -372,7 +379,7 @@ module Harvest
 
 
 
-    { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count }
+    { retweet_percentage: percentage, collected: returned_count, retweets: retweet_count, languages: languages_found.uniq }
 
 
   end

@@ -43,7 +43,7 @@ class Query < ApplicationRecord
       Resque::Job.destroy(:harvest, Harvest::TwitterWorker, self.id, self.keyword)
       #self.search.status = 'stopped'
       #self.search.save
-    
+
   end
 
 end
