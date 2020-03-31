@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_23_230106) do
+ActiveRecord::Schema.define(version: 2020_03_31_054528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 2020_03_23_230106) do
     t.string "default_url"
     t.boolean "default_profile_pic"
     t.integer "search_id"
+    t.string "language"
     t.index ["query_id"], name: "index_tweets_on_query_id"
   end
 
