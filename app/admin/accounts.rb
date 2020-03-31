@@ -23,6 +23,7 @@ menu priority: 2
     end
 
     column "Handle", :handle
+    column "Languages", :languages
     column "Followers", :followers
     column "Retweet Percentage", :retweet_percentage_total
     column "User ID", :user_id
