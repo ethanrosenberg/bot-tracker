@@ -345,7 +345,9 @@ module Harvest
               Rails.logger.info "languages found: #{percentage_data[:languages]}"
             end
             percentage_data[:languages].each do |language|
-              ac.languages << language
+              if language != 'und'
+                ac.languages << language
+              end
             end
             #{ retweet_percentage: percentage, collected: returned_count, retweet_count: retweet_count }
             ac.rt_percentage = "RT Stats: #{percentage_data[:retweet_percentage]}% (retweets: #{percentage_data[:retweets]}, collected: #{percentage_data[:collected]})"
