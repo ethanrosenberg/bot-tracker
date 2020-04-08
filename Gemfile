@@ -18,7 +18,7 @@ gem 'after_do'
 gem 'resque-status'
 gem 'sidekiq', '5.2.7'
 
-gem 'bootstrap', '~> 4.0.0.alpha6'
+gem 'bootstrap', '~> 4.3.1'
 
 gem 'timber', '~> 3.0'
 gem 'timber-rails', '~> 1.0' # optional

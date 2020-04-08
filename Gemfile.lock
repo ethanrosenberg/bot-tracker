@@ -70,10 +70,10 @@ GEM
     bindex (0.8.1)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
-    bootstrap (4.0.0)
-      autoprefixer-rails (>= 6.0.3)
-      popper_js (>= 1.12.9, < 2)
-      sass (>= 3.5.2)
+    bootstrap (4.3.1)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     buftok (0.2.0)
     builder (3.2.4)
     byebug (11.1.1)
@@ -417,7 +417,7 @@ DEPENDENCIES
   after_do
   airbrake
   bootsnap (>= 1.1.0)
-  bootstrap (~> 4.0.0.alpha6)
+  bootstrap (~> 4.3.1)
   byebug
   coffee-rails (~> 4.2)
   devise
